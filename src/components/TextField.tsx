@@ -1,11 +1,11 @@
 import React from "react";
 
-interface TextFieldProps {
+type TextFieldProps = {
   value: string;
   label: string;
   id: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+};
 
 export const TextField: React.FC<TextFieldProps> = ({
   value,
