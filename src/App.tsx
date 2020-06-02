@@ -1,72 +1,58 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
+import { TextField } from "./components/TextField";
+import { MessagesList } from "./components/MessagesList";
+import { ChatMessage } from "./types";
 const socket = io.connect("localhost:4000");
 
 export default () => {
-  const [text, setText] = useState<string>("");
-  const [name, setName] = useState<string>("");
-
-  interface ChatMessage {
-    name: string;
-    text: string;
-  }
-
+  const [textInput, setTextInput] = useState<string>("");
+  const [nameInput, setNameInput] = useState<string>("");
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
 
   useEffect(() => {
-    socket.on("message", (message: ChatMessage) => {
-      setChatHistory([...chatHistory, message]);
+    socket.on("message", (chatMessage: ChatMessage) => {
+      setChatHistory((chatHistory) => [...chatHistory, chatMessage]);
     });
-  });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
+    setTextInput(e.target.value);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    setNameInput(e.target.value);
   };
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    socket.emit("message", { name, text });
-    setText("");
+    socket.emit("message", { name: nameInput, text: textInput });
+    setTextInput("");
   };
 
   return (
     <div>
       <header>Drop me a line!</header>
       <form onSubmit={sendMessage}>
-        <label htmlFor="name">Name:</label>
-        <input
-          type="text"
+        <TextField
+          label="Name: "
           id="name"
-          name="name"
-          onChange={handleNameChange}
-          value={name}
+          handleChange={handleNameChange}
+          value={nameInput}
         />
-        <label htmlFor="text">Message:</label>
-        <input
-          type="text"
+        <TextField
+          label="Message: "
           id="text"
-          name="text"
-          onChange={handleTextChange}
-          value={text}
+          handleChange={handleTextChange}
+          value={textInput}
         />
         <button>Send</button>
       </form>
-
-      {!!chatHistory.length &&
-        chatHistory.map((message: ChatMessage, index: number) => {
-          return (
-            <div key={index}>
-              <p>
-                <strong>{message.name}</strong>
-              </p>
-              <p>{message.text}</p>
-            </div>
-          );
-        })}
+      <MessagesList messages={chatHistory} />
     </div>
   );
 };
