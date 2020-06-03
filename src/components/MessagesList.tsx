@@ -1,25 +1,32 @@
 import React from "react";
 import { ChatMessage } from "../types";
+import { Message } from "./Message";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 type Props = {
   messages: ChatMessage[];
+  userId: string;
 };
 
-export const MessagesList: React.FC<Props> = ({ messages }) => {
+export const MessagesList: React.FC<Props> = ({ messages, userId }) => {
   return (
-    <div>
+    <Wrapper>
       {!!messages.length
         ? messages.map((message: ChatMessage, index: number) => {
             return (
-              <div key={index}>
-                <p>
-                  <strong>{message.name}</strong>
-                </p>
-                <p>{message.text}</p>
-              </div>
+              <Message
+                key={index}
+                isUser={userId === message.userId}
+                message={message}
+              />
             );
           })
         : null}
-    </div>
+    </Wrapper>
   );
 };
