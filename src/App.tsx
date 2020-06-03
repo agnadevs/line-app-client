@@ -1,11 +1,20 @@
 import React from "react";
-import { Chat } from "./components/Chat";
+import styled from "styled-components";
+//import { Chat } from "./components/Chat";
+import { Welcome } from "./components/Welcome";
+
+const Wrapper = styled.div`
+  position: relative;
+  width: 900px;
+  margin: 0 auto;
+top: 100px;
+`;
 
 export default () => {
   return (
-    <div>
-      <header>Drop me a line!</header>
-      <Chat />
-    </div>
+    <Wrapper>
+      <Welcome />
+      {/* <Chat /> */}
+    </Wrapper>
   );
 };
