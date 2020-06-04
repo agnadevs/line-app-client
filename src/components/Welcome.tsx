@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { User } from '../types';
+import { User } from "../types";
+import { InfoBox } from "./application/InfoBox";
 
 const WelcomeContainer = styled.div`
   display: flex;
@@ -35,6 +36,12 @@ const Input = styled.input`
   text-align: center;
   font-size: 14px;
   font-weight: bold;
+  :focus::placeholder {
+    color: transparent;
+  }
+  :focus {
+    outline: none;
+  }
 `;
 
 const Button = styled.button`
@@ -48,27 +55,33 @@ const Button = styled.button`
 
 export const Welcome: React.FC = () => {
   const [name, setName] = useState<string>("");
-  const [users, setUsers] = useState <User[]>([])
+  const [users, setUsers] = useState<User[]>([]);
+  const [showInfo, setShowInfo] = useState("");
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/users')
-      .then(res => res.json())
-      .then(res => setUsers(res))
-  },[])
-
-  //
+    fetch("http://localhost:4000/api/users")
+      .then((res) => res.json())
+      .then((res) => setUsers(res));
+  }, []);
 
   const enterWithName = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (name === "") {
-      console.log("Enter a name please");
+      setShowInfo("Enter a name please");
       return;
     }
 
-    const userNameExists = users.find((user: User) => user.userName === name)
+    const userNameExists = users.find(
+      (user: User) => user.userName.toLowerCase() === name.toLowerCase()
+    );
 
     if (userNameExists) {
-      console.log("Name already exists. Choose a different user name.");
+      setShowInfo(`${name} already exists. Choose a different user name.`);
+      if (inputRef.current) {
+        inputRef.current.value = "";
+      }
       return;
     }
 
@@ -83,22 +96,24 @@ export const Welcome: React.FC = () => {
       .then((res) => console.log(res));
   };
 
-
   const onNameChange = (name: string) => {
+    setShowInfo("");
     setName(name);
-
   };
 
   return (
     <WelcomeContainer>
       <Header>Welcome to Line!</Header>
       <Subheader>Enter your name to join the conversation.</Subheader>
-      <Form onSubmit={enterWithName}>
+      <Form onSubmit={enterWithName} autoComplete="off">
         <Input
+          ref={inputRef}
+          id="userName"
           type="text"
           placeholder="Your name"
           onChange={(e) => onNameChange(e.target.value)}
         />
+        {showInfo ? <InfoBox isError={false} text={showInfo} /> : null}
         <Button>Enter</Button>
       </Form>
     </WelcomeContainer>
