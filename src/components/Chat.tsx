@@ -8,11 +8,10 @@ import styled from "styled-components";
 const socket = io.connect("localhost:4000");
 
 const ChatContainer = styled.div`
-  width: 500px;
-  height: 600px;
+  width: 100%;
+  height: 90vh;
   display: grid;
   grid-template-rows: auto 60px;
-  border: 1px solid black;
 `;
 
 const DisplayMessagesContainer = styled.div`
@@ -31,6 +30,18 @@ const Form = styled.form`
 
 const InputWrapper = styled.div`
   display: flex;
+`;
+
+const Button = styled.button`
+  width: 20%;
+  margin-left: 10px;
+  background-color: #66A182;
+  color: #FAFDED;
+  letter-spacing: 2px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
 `;
 
 export const Chat: React.FC = () => {
@@ -58,7 +69,7 @@ export const Chat: React.FC = () => {
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    socket.emit("message", { name: "Gris", text: textInput });
+    socket.emit("message", { name: "andrea_gylling", text: textInput });
     setTextInput("");
   };
 
@@ -68,7 +79,7 @@ export const Chat: React.FC = () => {
         <MessagesList userId={socket.id} messages={chatHistory} />
       </DisplayMessagesContainer>
       <NewMessageContainer>
-        <Form onSubmit={sendMessage}>
+        <Form onSubmit={sendMessage} autoComplete="off">
           {/* <TextField
             label="Name: "
             id="name"
@@ -81,7 +92,7 @@ export const Chat: React.FC = () => {
               handleChange={handleTextChange}
               value={textInput}
             />
-            <button>Send</button>
+            <Button>SEND</Button>
           </InputWrapper>
         </Form>
       </NewMessageContainer>

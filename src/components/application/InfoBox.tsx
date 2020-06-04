@@ -5,7 +5,7 @@ const Container = styled.div<Props>`
   display: flex;
   align-items: center;
   background-color: ${(props) => (props.isError ? "#FD9187" : "#C8E5E0")};
-  width: 80%;
+  width: 400px;
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 10px;

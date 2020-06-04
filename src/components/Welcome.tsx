@@ -8,20 +8,22 @@ const WelcomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  border-radius: 4px;
-  box-shadow: 2px 2px 5px #888888;
-  width: 50%;
-  padding: 20px;
+  padding: 70px;
 `;
 
 const Header = styled.h1`
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  font-size: 75px;
+  color: #FAFDED;
+  letter-spacing: 2px;
 `;
 
-const Subheader = styled.h3`
+const Subheader = styled.span`
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
+  font-size: 20px;
+  color: #FAFDED;
 `;
 
 const Form = styled.form`
@@ -31,12 +33,18 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-  width: 80%;
+  width: 400px;
   padding: 10px;
   margin-bottom: 10px;
   text-align: center;
-  font-size: 14px;
-  font-weight: bold;
+  background-color: transparent;
+  border: 1px solid #FAFDED;
+  color: #FAFDED;
+  font-size: 20px;
+  letter-spacing: 4px;
+  ::placeholder {
+    color: #FAFDED;
+  }
   :focus::placeholder {
     color: transparent;
   }
@@ -46,12 +54,15 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 20%;
-  padding: 10px;
-  background-color: lightblue;
+  width: 200px;
+  padding: 20px;
+  margin-top: 30px;
+  background-color: #66A182;
+  color: #FAFDED;
   border: none;
   border-radius: 4px;
   font-weight: bold;
+  letter-spacing: 2px;
 `;
 
 type Info = {
@@ -116,8 +127,8 @@ export const Welcome: React.FC = () => {
 
   return (
     <WelcomeContainer>
-      <Header>Welcome to Line!</Header>
-      <Subheader>Enter your name to join the conversation.</Subheader>
+      <Header>Line App</Header>
+      <Subheader>Choose a username to join the discussion.</Subheader>
       <Form onSubmit={enterWithName} autoComplete="off">
         <Input
           ref={inputRef}
@@ -127,7 +138,7 @@ export const Welcome: React.FC = () => {
           onChange={(e) => onNameChange(e.target.value)}
         />
         {showInfo.text ? <InfoBox {...showInfo} /> : null}
-        <Button>Enter</Button>
+        <Button>ENTER</Button>
       </Form>
     </WelcomeContainer>
   );

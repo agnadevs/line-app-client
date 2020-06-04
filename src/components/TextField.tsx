@@ -1,16 +1,17 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-  width: 100%;
-`;
+// const Wrapper = styled.div`
+//   /* width: 100%; */
+// `;
 
 const Input = styled.input`
-  width: 100%;
+  width: 90%;
   height: 60px;
   padding: 12px 20px;
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 1px solid #FAFDED;
+  color: #0E0F19;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 18px;
@@ -33,7 +34,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   handleChange,
 }) => {
   return (
-    <Wrapper>
+    <Fragment>
       {label && <label htmlFor={id}>{label}</label>}
       <Input
         type="text"
@@ -42,6 +43,6 @@ export const TextField: React.FC<TextFieldProps> = ({
         value={value}
         placeholder="Message.."
       />
-    </Wrapper>
+    </Fragment>
   );
 };

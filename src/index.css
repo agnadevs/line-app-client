@@ -140,6 +140,10 @@ div {
 p,
 span,
 ul,
-li {
+li,
+button {
   font-family: "Raleway", sans-serif;
+}
+input {
+  font-family: 'IBM Plex Mono', monospace;
 }

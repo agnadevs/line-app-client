@@ -2,6 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+const StyledLink = styled(Link)`
+    text-decoration: none;
+
+    &:focus, &:hover, &:visited, &:link, &:active {
+        text-decoration: none;
+    }
+`;
+
 const Box = styled.div`
   display: flex;
   flex-direction: column;
@@ -46,13 +54,13 @@ export const MenuItem: React.FC<Props> = ({
 }) => {
   return (
     <>
-      <Link to={path}>
+      <StyledLink to={path} >
         <Box onClick={onClick}>
           <Title>{title}</Title>
           <Info>{infoText}</Info>
           <Image src={imgURL}></Image>
         </Box>
-      </Link>
+      </StyledLink>
     </>
   );
 };
