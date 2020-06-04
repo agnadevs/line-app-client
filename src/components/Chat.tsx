@@ -69,7 +69,7 @@ export const Chat: React.FC = () => {
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    socket.emit("message", { name: "andrea_gylling", text: textInput });
+    socket.emit("message", { name: "lille_grisen", text: textInput });
     setTextInput("");
   };
 
