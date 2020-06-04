@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Box = styled.div`
   display: flex;
@@ -9,20 +10,21 @@ const Box = styled.div`
   width: 300px;
   height: 250px;
   border-radius: 5px;
-  background-color: #0b0637;
+  background-color: #fafded;
   margin-bottom: 20px;
   padding: 10px;
 `;
 
 const Title = styled.h2`
-  font-size: 30px;
+  font-size: 35px;
+  letter-spacing: 0.9px;
   font-weight: bold;
-  color: white;
-  margin-top: 20px;
+  color: #0e0f19;
+  margin: 20px 0px;
 `;
 
 const Info = styled.p`
-  color: white;
+  color: #0e0f19;
   padding: 10px;
 `;
 
@@ -33,20 +35,24 @@ type Props = {
   infoText: string;
   imgURL?: string;
   onClick: () => void;
+  path: string;
 };
 export const MenuItem: React.FC<Props> = ({
   title,
   infoText,
   imgURL,
   onClick,
+  path,
 }) => {
   return (
     <>
-      <Box onClick={onClick}>
-        <Title>{title}</Title>
-        <Info>{infoText}</Info>
-        <Image src={imgURL}></Image>
-      </Box>
+      <Link to={path}>
+        <Box onClick={onClick}>
+          <Title>{title}</Title>
+          <Info>{infoText}</Info>
+          <Image src={imgURL}></Image>
+        </Box>
+      </Link>
     </>
   );
 };
