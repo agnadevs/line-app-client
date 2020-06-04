@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { User } from '../types';
 
 const WelcomeContainer = styled.div`
   display: flex;
@@ -47,6 +48,15 @@ const Button = styled.button`
 
 export const Welcome: React.FC = () => {
   const [name, setName] = useState<string>("");
+  const [users, setUsers] = useState <User[]>([])
+
+  useEffect(() => {
+    fetch('http://localhost:4000/api/users')
+      .then(res => res.json())
+      .then(res => setUsers(res))
+  },[])
+
+  //
 
   const enterWithName = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,17 +65,16 @@ export const Welcome: React.FC = () => {
       return;
     }
 
-    doFetch("http://localhost:4000/api/users/newUser", { name });
-  };
+    const userNameExists = users.find((user: User) => user.userName === name)
 
-  type Data = {
-    name: string;
-  };
+    if (userNameExists) {
+      console.log("Name already exists. Choose a different user name.");
+      return;
+    }
 
-  const doFetch = async (url: string, data: Data) => {
-    await fetch(url, {
+    fetch("http://localhost:4000/api/users/newUser", {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ name }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -74,8 +83,10 @@ export const Welcome: React.FC = () => {
       .then((res) => console.log(res));
   };
 
+
   const onNameChange = (name: string) => {
     setName(name);
+
   };
 
   return (

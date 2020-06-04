@@ -3,3 +3,13 @@ export type ChatMessage = {
   text: string;
   userId: string;
 };
+
+export type User = {
+  userName: string;
+  userId: string;
+  createdAt: string;
+}
+
+type Data = {
+  name: string;
+};
