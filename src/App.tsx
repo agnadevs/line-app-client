@@ -1,20 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-//import { Chat } from "./components/Chat";
+import Menu from "./components/menu/Menu";
 import { Welcome } from "./components/Welcome";
+import Cookies from "js-cookie";
 
 const Wrapper = styled.div`
   position: relative;
-  width: 900px;
+  width: 1000px;
   margin: 0 auto;
-top: 100px;
+  top: 100px;
 `;
 
 export default () => {
-  return (
-    <Wrapper>
-      <Welcome />
-      {/* <Chat /> */}
-    </Wrapper>
-  );
+  return <Wrapper>{!!Cookies.get("user") ? <Menu /> : <Welcome />}</Wrapper>;
 };

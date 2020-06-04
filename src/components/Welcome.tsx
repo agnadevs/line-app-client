@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { User } from "../types";
 import { InfoBox } from "./application/InfoBox";
+import Cookies from "js-cookie";
 
 const WelcomeContainer = styled.div`
   display: flex;
@@ -102,7 +103,10 @@ export const Welcome: React.FC = () => {
       },
     })
       .then((res) => res.json())
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res);
+        Cookies.set("user", res, { expires: 7 });
+      });
   };
 
   const onNameChange = (name: string) => {

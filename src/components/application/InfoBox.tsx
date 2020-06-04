@@ -1,9 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-// type Variants = 'error' | 'info';
-
-//
 const Container = styled.div<Props>`
   display: flex;
   align-items: center;
