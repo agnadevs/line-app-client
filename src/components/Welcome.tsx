@@ -53,10 +53,15 @@ const Button = styled.button`
   font-weight: bold;
 `;
 
+type Info = {
+  text: string;
+  isError: boolean;
+};
+
 export const Welcome: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
-  const [showInfo, setShowInfo] = useState("");
+  const [showInfo, setShowInfo] = useState<Info>({ text: "", isError: false });
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -67,9 +72,10 @@ export const Welcome: React.FC = () => {
   }, []);
 
   const enterWithName = (e: React.FormEvent<HTMLFormElement>) => {
+    setShowInfo({ text: "", isError: false });
     e.preventDefault();
     if (name === "") {
-      setShowInfo("Enter a name please");
+      setShowInfo({ text: "Enter a name please", isError: true });
       return;
     }
 
@@ -78,7 +84,10 @@ export const Welcome: React.FC = () => {
     );
 
     if (userNameExists) {
-      setShowInfo(`${name} already exists. Choose a different user name.`);
+      setShowInfo({
+        text: `${name} already exists. Choose a different user name.`,
+        isError: false,
+      });
       if (inputRef.current) {
         inputRef.current.value = "";
       }
@@ -97,7 +106,7 @@ export const Welcome: React.FC = () => {
   };
 
   const onNameChange = (name: string) => {
-    setShowInfo("");
+    setShowInfo({ text: "", isError: false });
     setName(name);
   };
 
@@ -113,7 +122,7 @@ export const Welcome: React.FC = () => {
           placeholder="Your name"
           onChange={(e) => onNameChange(e.target.value)}
         />
-        {showInfo ? <InfoBox isError={false} text={showInfo} /> : null}
+        {showInfo.text ? <InfoBox {...showInfo} /> : null}
         <Button>Enter</Button>
       </Form>
     </WelcomeContainer>
