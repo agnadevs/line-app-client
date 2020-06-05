@@ -1,31 +1,10 @@
 import React, { Fragment } from "react";
-import styled from "styled-components";
 import Menu from "./components/menu/Menu";
 import { Chat } from "./components/Chat";
 import { Welcome } from "./components/Welcome";
+import { LoggedInRoute } from "./components/LoggedInRoute";
 import Cookies from "js-cookie";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-
-// const Wrapper = styled.div`
-//   display: flex;
-//   flex-wrap: wrap;
-//   /* position: relative;
-//   width: 1000px;
-//   margin: 0 auto;
-//   top: 100px; */
-// `;
-
-const Home = () => {
-  return <div>Home</div>;
-};
-
-const About = () => {
-  return <div>About</div>;
-};
-
-const Contact = () => {
-  return <div>Contact</div>;
-};
 
 export default () => {
   return (
@@ -35,13 +14,24 @@ export default () => {
           <Route path="/" exact>
             {!!Cookies.get("user") ? <Redirect to="/menu" /> : <Welcome />}
           </Route>
-          <Route component={Menu} path="/menu" />
-          <Route component={Chat} path="/chat" />
+
+          <LoggedInRoute path="/menu" component={Menu} />
+          <LoggedInRoute path="/chat" component={Chat} />
+          {/* <Route component={Welcome} path="/" /> */}
+
+          {/* <Route component={Menu} path="/menu" />
+          <Route component={Chat} path="/chat" /> */}
+          <Route component={NotFound} />
         </Switch>
       </BrowserRouter>
       {/* {!!Cookies.get("user") ? <Menu /> : <Welcome />} */}
     </Fragment>
   );
+};
+
+const NotFound = () => {
+  console.log("404");
+  return <div>404 - Page not found</div>;
 };
 
 /*
