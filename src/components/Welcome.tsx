@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { User } from "../types";
 import { InfoBox } from "./application/InfoBox";
 import Cookies from "js-cookie";
+import { useHistory } from "react-router";
 
 const WelcomeContainer = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const Header = styled.h1`
   text-align: center;
   margin-bottom: 30px;
   font-size: 75px;
-  color: #FAFDED;
+  color: #fafded;
   letter-spacing: 2px;
 `;
 
@@ -23,7 +24,7 @@ const Subheader = styled.span`
   text-align: center;
   margin-bottom: 50px;
   font-size: 20px;
-  color: #FAFDED;
+  color: #fafded;
 `;
 
 const Form = styled.form`
@@ -38,12 +39,12 @@ const Input = styled.input`
   margin-bottom: 10px;
   text-align: center;
   background-color: transparent;
-  border: 1px solid #FAFDED;
-  color: #FAFDED;
+  border: 1px solid #fafded;
+  color: #fafded;
   font-size: 20px;
   letter-spacing: 4px;
   ::placeholder {
-    color: #FAFDED;
+    color: #fafded;
   }
   :focus::placeholder {
     color: transparent;
@@ -57,8 +58,8 @@ const Button = styled.button`
   width: 200px;
   padding: 20px;
   margin-top: 30px;
-  background-color: #66A182;
-  color: #FAFDED;
+  background-color: #66a182;
+  color: #fafded;
   border: none;
   border-radius: 4px;
   font-weight: bold;
@@ -74,6 +75,8 @@ export const Welcome: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [showInfo, setShowInfo] = useState<Info>({ text: "", isError: false });
+
+  const history = useHistory();
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -117,6 +120,7 @@ export const Welcome: React.FC = () => {
       .then((res) => {
         console.log(res);
         Cookies.set("user", res, { expires: 7 });
+        history.push("/menu");
       });
   };
 
