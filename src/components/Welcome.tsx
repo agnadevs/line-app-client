@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import styled from "styled-components";
 import { User } from "../types";
 import { InfoBox } from "./application/InfoBox";
 import Cookies from "js-cookie";
 import { useHistory } from "react-router";
+import { userContext } from "../context";
 
 const WelcomeContainer = styled.div`
   display: flex;

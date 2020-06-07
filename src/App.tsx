@@ -5,39 +5,46 @@ import { Welcome } from "./components/Welcome";
 import { LoggedInRoute } from "./components/LoggedInRoute";
 import Cookies from "js-cookie";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { userContext } from "./context";
+import { useUser } from "./setter";
 
 export default () => {
+  const user = useUser();
+
   return (
     <Fragment>
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" exact>
-            {!!Cookies.get("user") ? <Redirect to="/menu" /> : <Welcome />}
-          </Route>
+      <userContext.Provider value={user}>
+        <BrowserRouter>
+          <Switch>
+            <Route path="/" exact>
+              {!!Cookies.get("user") ? <Redirect to="/menu" /> : <Welcome />}
+            </Route>
 
-          <LoggedInRoute path="/menu" component={Menu} />
-          <LoggedInRoute path="/chat" component={Chat} />
-          {/* <Route component={Welcome} path="/" /> */}
+            <LoggedInRoute path="/menu" component={Menu} />
+            {/* <LoggedInRoute path="/chat/:room" component={Chat} /> */}
 
-          {/* <Route component={Menu} path="/menu" />
-          <Route component={Chat} path="/chat" /> */}
-          <Route component={NotFound} />
-        </Switch>
-      </BrowserRouter>
+            <Route path="/chat/:room" component={Chat} />
+            <Route component={NotFound} />
+          </Switch>
+        </BrowserRouter>
+      </userContext.Provider>
       {/* {!!Cookies.get("user") ? <Menu /> : <Welcome />} */}
     </Fragment>
   );
 };
 
 const NotFound = () => {
-  console.log("404");
   return <div>404 - Page not found</div>;
 };
 
 /*
 1. Context API för att spara user info globalt
-2. Hantering för radering av kaka
-3. Rooms
-4. Routing
-
+2. Rooms
+  - Spara ner meddelanden, hitta format som funkar.
+3. Routing
+  - automatiskt komma vidare till menu när angett namn
+  - automatiskt tas tillbaka till welcome on cookie tas bort/expires.
+4. Header till chat room med tillbaka knapp, namn på rummet etc.
+  - utfällbar del till hö/vä med lista över alla namn i chatten "just nu".
+  - timestamp på meddelanden
 */
