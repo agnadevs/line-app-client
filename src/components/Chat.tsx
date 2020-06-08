@@ -6,7 +6,7 @@ import { ChatMessage } from "../types";
 import styled from "styled-components";
 import { userContext } from "../context";
 import { useParams } from "react-router-dom";
-
+import {checkAndSetUserContext} from '../user'
 import { RouteComponentProps } from "react-router";
 
 interface MatchParams {
@@ -58,14 +58,17 @@ export const Chat: React.FC<Props> = (props) => {
   const [textInput, setTextInput] = useState<string>("");
   const [nameInput, setNameInput] = useState<string>("");
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
-  const { currentUser } = useContext(userContext);
+  const { currentUser, setCurrentUser } = useContext(userContext);
 
+  console.log(currentUser)
   interface RouteParams {
     room: string;
   }
   const { room } = useParams<RouteParams>();
 
   useEffect(() => {
+    checkAndSetUserContext(currentUser, setCurrentUser);
+
     socket.emit("joinRoom", {
       user: currentUser,
       room,

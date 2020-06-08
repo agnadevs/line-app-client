@@ -3,7 +3,7 @@ import { MenuItem } from "./MenuItem";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { userContext } from "../../context";
-import Cookies from "js-cookie";
+import {checkAndSetUserContext} from '../../user'
 
 const MenuWrapper = styled.div`
   display: flex;
@@ -41,26 +41,12 @@ const menuItems = [
 ];
 
 export default () => {
-  const { setCurrentUser } = useContext(userContext);
-  const user = Cookies.get("user");
-  const colors: string[] = [
-    "#d5dcf9",
-    "#caffb9",
-    "#a8ccc9",
-    "#a4b8c4",
-    "#daf7dc",
-  ];
-  useEffect(() => {
-    if (user) {
-      const parsedUser = JSON.parse(user);
+  const { currentUser, setCurrentUser } = useContext(userContext);
 
-      setCurrentUser({
-        userName: parsedUser.userName,
-        userId: parsedUser.userId,
-        color: colors[Math.floor(Math.random() * colors.length)],
-      });
-    }
+  useEffect(() => {
+    checkAndSetUserContext(currentUser, setCurrentUser);
   }, []);
+
   return (
     <MenuWrapper>
       {menuItems.map((item, index) => {
