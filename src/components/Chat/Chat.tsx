@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import io from "socket.io-client";
-import { TextField } from "./TextField";
+import { TextField } from "./ChatInput";
 import { MessagesList } from "./MessagesList";
-import { ChatMessage } from "../types";
+import { ChatMessage } from "../../types";
 import styled from "styled-components";
-import { userContext } from "../context";
+import { userContext } from "../../context";
 import { useParams } from "react-router-dom";
-import {checkAndSetUserContext} from '../user'
+import { checkAndSetUserContext } from "../../user";
 import { RouteComponentProps } from "react-router";
 
 interface MatchParams {
@@ -60,7 +60,7 @@ export const Chat: React.FC<Props> = (props) => {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const { currentUser, setCurrentUser } = useContext(userContext);
 
-  console.log(currentUser)
+  console.log(currentUser);
   interface RouteParams {
     room: string;
   }

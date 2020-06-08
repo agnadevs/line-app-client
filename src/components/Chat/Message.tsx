@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { ChatMessage } from "../types";
+import { ChatMessage } from '../../types'
 import styled from "styled-components";
 
 const MessageWrapper = styled.div<Props>`

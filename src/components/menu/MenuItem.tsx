@@ -3,11 +3,15 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const StyledLink = styled(Link)`
-    text-decoration: none;
+  text-decoration: none;
 
-    &:focus, &:hover, &:visited, &:link, &:active {
-        text-decoration: none;
-    }
+  &:focus,
+  &:hover,
+  &:visited,
+  &:link,
+  &:active {
+    text-decoration: none;
+  }
 `;
 
 const Box = styled.div`
@@ -54,7 +58,7 @@ export const MenuItem: React.FC<Props> = ({
 }) => {
   return (
     <>
-      <StyledLink to={path} >
+      <StyledLink to={path}>
         <Box onClick={onClick}>
           <Title>{title}</Title>
           <Info>{infoText}</Info>

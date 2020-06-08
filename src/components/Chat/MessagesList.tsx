@@ -1,8 +1,8 @@
 import React, {useContext} from "react";
-import { ChatMessage } from "../types";
+import { ChatMessage } from "../../types";
 import { Message } from "./Message";
 import styled from "styled-components";
-import {userContext} from '../context';
+import {userContext} from '../../context';
 
 const Wrapper = styled.div`
   display: flex;

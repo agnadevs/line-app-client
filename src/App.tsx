@@ -1,8 +1,8 @@
 import React, { Fragment } from "react";
-import Menu from "./components/menu/Menu";
-import { Chat } from "./components/Chat";
-import { Welcome } from "./components/Welcome";
-import { LoggedInRoute } from "./components/LoggedInRoute";
+import Menu from "./components/Menu/Menu";
+import { Chat } from "./components/Chat/Chat";
+import { Welcome } from "./components/Login";
+import { LoggedInRoute } from "./components/Application/LoggedInRoute";
 import Cookies from "js-cookie";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { userContext } from "./context";
@@ -10,7 +10,6 @@ import { useUser } from "./setter";
 
 export default () => {
   const user = useUser();
-
   return (
     <Fragment>
       <userContext.Provider value={user}>
@@ -21,9 +20,8 @@ export default () => {
             </Route>
 
             <LoggedInRoute path="/menu" component={Menu} />
-            {/* <LoggedInRoute path="/chat/:room" component={Chat} /> */}
+            <LoggedInRoute path="/chat/:room" component={Chat} />
 
-            <Route path="/chat/:room" component={Chat} />
             <Route component={NotFound} />
           </Switch>
         </BrowserRouter>

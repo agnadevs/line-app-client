@@ -3,7 +3,7 @@ import { MenuItem } from "./MenuItem";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { userContext } from "../../context";
-import {checkAndSetUserContext} from '../../user'
+import { checkAndSetUserContext } from "../../user";
 
 const MenuWrapper = styled.div`
   display: flex;
