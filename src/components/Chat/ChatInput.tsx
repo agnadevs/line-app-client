@@ -1,17 +1,13 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 
-// const Wrapper = styled.div`
-//   /* width: 100%; */
-// `;
-
 const Input = styled.input`
   width: 90%;
   height: 60px;
   padding: 12px 20px;
   display: inline-block;
-  border: 1px solid #FAFDED;
-  color: #0E0F19;
+  border: 1px solid #fafded;
+  color: #0e0f19;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 18px;

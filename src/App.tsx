@@ -5,14 +5,13 @@ import { Welcome } from "./components/Login";
 import { LoggedInRoute } from "./components/Application/LoggedInRoute";
 import Cookies from "js-cookie";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { userContext } from "./context";
-import { useUser } from "./setter";
+
+import { StateProvider } from "./state/store";
 
 export default () => {
-  const user = useUser();
   return (
     <Fragment>
-      <userContext.Provider value={user}>
+      <StateProvider>
         <BrowserRouter>
           <Switch>
             <Route path="/" exact>
@@ -25,8 +24,7 @@ export default () => {
             <Route component={NotFound} />
           </Switch>
         </BrowserRouter>
-      </userContext.Provider>
-      {/* {!!Cookies.get("user") ? <Menu /> : <Welcome />} */}
+      </StateProvider>
     </Fragment>
   );
 };

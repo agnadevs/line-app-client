@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { User } from "../types";
 import { InfoBox } from "./Application/InfoBox";
 import Cookies from "js-cookie";
 import { useHistory } from "react-router";
-import { userContext } from "../context";
 
 const WelcomeContainer = styled.div`
   display: flex;
@@ -119,7 +118,6 @@ export const Welcome: React.FC = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         Cookies.set("user", res, { expires: 7 });
         history.push("/menu");
       });

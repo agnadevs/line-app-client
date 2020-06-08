@@ -1,5 +1,5 @@
-import Cookies from 'js-cookie';
-const userCookie = Cookies.get('user')
+import Cookies from "js-cookie";
+const userCookie = Cookies.get("user");
 
 const colors: string[] = [
   "#d5dcf9",
@@ -9,20 +9,22 @@ const colors: string[] = [
   "#daf7dc",
 ];
 
-const checkAndSetUserContext = (currentUser: any, setCurrentUser: any) => {
-  if(!currentUser.userName){
+const checkAndSetUserContext = (user: any, dispatch: any) => {
+  if (!user.userName) {
     if (userCookie) {
       const parsedUser = JSON.parse(userCookie);
-      setCurrentUser({
-        userName: parsedUser.userName,
-        userId: parsedUser.userId,
-        color: colors[Math.floor(Math.random() * colors.length)],
+      dispatch({
+        type: "setUser",
+        data: {
+          userName: parsedUser.userName,
+          userId: parsedUser.userId,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        },
       });
-    } else {
-      window.location.href = '/'
+    } else {
+      window.location.href = "/";
     }
   }
-}
+};
 
-export {checkAndSetUserContext}
-
+export { checkAndSetUserContext };

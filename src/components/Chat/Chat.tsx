@@ -4,10 +4,10 @@ import { TextField } from "./ChatInput";
 import { MessagesList } from "./MessagesList";
 import { ChatMessage } from "../../types";
 import styled from "styled-components";
-import { userContext } from "../../context";
 import { useParams } from "react-router-dom";
-import { checkAndSetUserContext } from "../../user";
 import { RouteComponentProps } from "react-router";
+import { checkAndSetUserContext } from "../../user";
+import { store } from "../../state/store";
 
 interface MatchParams {
   name: string;
@@ -56,21 +56,20 @@ const Button = styled.button`
 
 export const Chat: React.FC<Props> = (props) => {
   const [textInput, setTextInput] = useState<string>("");
-  const [nameInput, setNameInput] = useState<string>("");
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
-  const { currentUser, setCurrentUser } = useContext(userContext);
 
-  console.log(currentUser);
+  const { state, dispatch } = useContext(store);
+  const { user } = state;
+
   interface RouteParams {
     room: string;
   }
   const { room } = useParams<RouteParams>();
 
   useEffect(() => {
-    checkAndSetUserContext(currentUser, setCurrentUser);
-
+    checkAndSetUserContext(user, dispatch);
     socket.emit("joinRoom", {
-      user: currentUser,
+      user: user,
       room,
     });
     socket.on("message", (chatMessage: ChatMessage) => {
@@ -79,7 +78,7 @@ export const Chat: React.FC<Props> = (props) => {
 
     return () => {
       socket.emit("leaveRoom", {
-        user: currentUser,
+        user: user,
         room,
       });
 
@@ -91,33 +90,25 @@ export const Chat: React.FC<Props> = (props) => {
     setTextInput(e.target.value);
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNameInput(e.target.value);
-  };
-
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    socket.emit("message", {
-      name: currentUser.userName,
-      userId: currentUser.userId,
-      text: textInput,
-    });
+    if (user) {
+      socket.emit("message", {
+        name: user.userName,
+        userId: user.userId,
+        text: textInput,
+      });
+    }
     setTextInput("");
   };
 
   return (
     <ChatContainer>
       <DisplayMessagesContainer>
-        <MessagesList userId={currentUser.userId} messages={chatHistory} />
+        <MessagesList userId={user.userId} messages={chatHistory} />
       </DisplayMessagesContainer>
       <NewMessageContainer>
         <Form onSubmit={sendMessage} autoComplete="off">
-          {/* <TextField
-            label="Name: "
-            id="name"
-            handleChange={handleNameChange}
-            value={nameInput}
-          /> */}
           <InputWrapper>
             <TextField
               id="text"

@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from "react";
 import { MenuItem } from "./MenuItem";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { userContext } from "../../context";
 import { checkAndSetUserContext } from "../../user";
+import { store } from "../../state/store";
 
 const MenuWrapper = styled.div`
   display: flex;
@@ -41,10 +41,10 @@ const menuItems = [
 ];
 
 export default () => {
-  const { currentUser, setCurrentUser } = useContext(userContext);
+  const { state, dispatch } = useContext(store);
 
   useEffect(() => {
-    checkAndSetUserContext(currentUser, setCurrentUser);
+    checkAndSetUserContext(state.user, dispatch);
   }, []);
 
   return (

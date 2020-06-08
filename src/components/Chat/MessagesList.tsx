@@ -1,8 +1,8 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { ChatMessage } from "../../types";
 import { Message } from "./Message";
 import styled from "styled-components";
-import {userContext} from '../../context';
+import { store } from "../../state/store";
 
 const Wrapper = styled.div`
   display: flex;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const MessagesList: React.FC<Props> = ({ messages, userId }) => {
-  const { currentUser } = useContext(userContext);
+  const { state } = useContext(store);
 
   return (
     <Wrapper>
@@ -26,7 +26,7 @@ export const MessagesList: React.FC<Props> = ({ messages, userId }) => {
                 key={index}
                 isUser={userId === message.userId}
                 message={message}
-                color={currentUser.color}
+                color={state.user.color}
               />
             );
           })
