@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import io from "socket.io-client";
-import { TextField } from "./ChatInput";
+import { ChatInput } from "./ChatInput";
 import { MessagesList } from "./MessagesList";
 import { ChatMessage } from "../../types";
 import styled from "styled-components";
@@ -110,7 +110,7 @@ export const Chat: React.FC<Props> = (props) => {
       <NewMessageContainer>
         <Form onSubmit={sendMessage} autoComplete="off">
           <InputWrapper>
-            <TextField
+            <ChatInput
               id="text"
               handleChange={handleTextChange}
               value={textInput}

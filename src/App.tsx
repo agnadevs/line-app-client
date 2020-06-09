@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import Menu from "./components/Menu/Menu";
 import { Chat } from "./components/Chat/Chat";
-import { Welcome } from "./components/Login";
+import { Login } from "./components/Login";
 import { LoggedInRoute } from "./components/Application/LoggedInRoute";
 import Cookies from "js-cookie";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -15,7 +15,7 @@ export default () => {
         <BrowserRouter>
           <Switch>
             <Route path="/" exact>
-              {!!Cookies.get("user") ? <Redirect to="/menu" /> : <Welcome />}
+              {!!Cookies.get("user") ? <Redirect to="/menu" /> : <Login />}
             </Route>
 
             <LoggedInRoute path="/menu" component={Menu} />
