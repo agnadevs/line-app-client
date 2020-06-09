@@ -14,7 +14,7 @@ const checkAndSetUserContext = (user: any, dispatch: any) => {
     if (userCookie) {
       const parsedUser = JSON.parse(userCookie);
       dispatch({
-        type: "setUser",
+        type: "SET_USER",
         data: {
           userName: parsedUser.userName,
           userId: parsedUser.userId,

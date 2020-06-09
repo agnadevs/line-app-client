@@ -19,11 +19,25 @@ const Name = styled.p<Props>`
   margin: 10px 5px;
 `;
 
+const Time = styled.p<Props>`
+  align-self: ${(props) => (props.isUser ? "flex-end" : "flex-start")};
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: orange;
+  margin-top: 5px;
+  display:none;
+`;
+
 const Text = styled.p`
   padding: 10px 15px;
   line-height: 20px;
   font-family: "IBM Plex Mono", monospace;
   font-size: 16px;
+  :active {
+    p {
+      display:block;
+    }
+  }
 `;
 
 type Props = {
@@ -32,12 +46,15 @@ type Props = {
   color: string;
 };
 
+
 export const Message: React.FC<Props> = (props) => {
   return (
     <Fragment>
-      <Name {...props}>{props.message.name}</Name>
+      <Name {...props}>{props.message.userName}</Name>
       <MessageWrapper {...props}>
-        <Text>{props.message.text}</Text>
+        <Text>{props.message.text}
+          <Time {...props}>{props.message.timestamp}</Time>
+        </Text>
       </MessageWrapper>
     </Fragment>
   );

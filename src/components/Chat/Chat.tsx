@@ -15,8 +15,6 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> {}
 
-const socket = io.connect("localhost:4000");
-
 const ChatContainer = styled.div`
   width: 100%;
   height: 90vh;
@@ -55,8 +53,9 @@ const Button = styled.button`
 `;
 
 export const Chat: React.FC<Props> = (props) => {
+  const [socketState, setSocketState] = useState<SocketIOClient.Socket | null>(null)
   const [textInput, setTextInput] = useState<string>("");
-  const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   const { state, dispatch } = useContext(store);
   const { user } = state;
@@ -66,14 +65,24 @@ export const Chat: React.FC<Props> = (props) => {
   }
   const { room } = useParams<RouteParams>();
 
+
   useEffect(() => {
+    const socket = io.connect("localhost:4000");
+    setSocketState(socket)
+
+    fetch(`http://localhost:4000/api/chat/${room}`)
+      .then(res => res.json())
+      .then(res => setMessages((messages) => [...messages, ...res]))
+      .catch(err => console.log(err))
+
     checkAndSetUserContext(user, dispatch);
     socket.emit("joinRoom", {
       user: user,
       room,
     });
-    socket.on("message", (chatMessage: ChatMessage) => {
-      setChatHistory((chatHistory) => [...chatHistory, chatMessage]);
+
+    socket.on("messageFromServer", (chatMessage: ChatMessage) => {
+      setMessages((messages) => [...messages, chatMessage]);
     });
 
     return () => {
@@ -83,8 +92,9 @@ export const Chat: React.FC<Props> = (props) => {
       });
 
       socket.disconnect();
+      setSocketState(null)
     };
-  }, []);
+  }, [dispatch, room, user]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextInput(e.target.value);
@@ -92,11 +102,12 @@ export const Chat: React.FC<Props> = (props) => {
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (user) {
-      socket.emit("message", {
-        name: user.userName,
+    if (user && socketState) {
+      socketState.emit("messageFromClient", {
+        userName: user.userName,
         userId: user.userId,
         text: textInput,
+        timestamp: new Date()
       });
     }
     setTextInput("");
@@ -105,7 +116,7 @@ export const Chat: React.FC<Props> = (props) => {
   return (
     <ChatContainer>
       <DisplayMessagesContainer>
-        <MessagesList userId={user.userId} messages={chatHistory} />
+        <MessagesList userId={user.userId} messages={messages} />
       </DisplayMessagesContainer>
       <NewMessageContainer>
         <Form onSubmit={sendMessage} autoComplete="off">

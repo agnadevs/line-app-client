@@ -1,7 +1,8 @@
 export type ChatMessage = {
-  name: string;
   text: string;
+  userName: string;
   userId: string;
+  timestamp: string;
 };
 
 export type User = {

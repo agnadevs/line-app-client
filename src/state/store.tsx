@@ -32,7 +32,7 @@ const StateProvider: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer<React.Reducer<State, Action>>(
     (state, action) => {
       switch (action.type) {
-        case "setUser":
+        case "SET_USER":
           const { data } = action;
           if (data) {
             state.user = data;
