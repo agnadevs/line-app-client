@@ -23,7 +23,7 @@ type TextFieldProps = {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export const TextField: React.FC<TextFieldProps> = ({
+export const ChatInput: React.FC<TextFieldProps> = ({
   value,
   label,
   id,

@@ -71,7 +71,7 @@ type Info = {
   isError: boolean;
 };
 
-export const Welcome: React.FC = () => {
+export const Login: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
   const [showInfo, setShowInfo] = useState<Info>({ text: "", isError: false });
