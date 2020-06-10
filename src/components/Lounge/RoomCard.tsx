@@ -49,7 +49,7 @@ type Props = {
   onClick: () => void;
   path: string;
 };
-export const MenuItem: React.FC<Props> = ({
+export const RoomCard: React.FC<Props> = ({
   title,
   infoText,
   imgURL,

@@ -9,7 +9,9 @@ import { RouteComponentProps } from "react-router";
 import { checkAndSetUserContext } from "../../user";
 import { store } from "../../state/store";
 import { ChatMenu } from "../Application/ChatMenu";
+import { RoomsMenu } from "../Application/RoomsMenu";
 import { PageHeader } from "../Application/PageHeader";
+import Cookies from "js-cookie";
 
 interface MatchParams {
   name: string;
@@ -17,18 +19,13 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> {}
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 95%;
-`;
 const ChatContainer = styled.div`
-  height: 60%;
+  width: 70%;
+  height: 100vh;
   display: grid;
   grid-template-rows: auto 60px;
-  margin: 0px auto;
+  margin: 20px auto;
   padding: 5px;
-  box-shadow: -3px 0px 5px 0px rgba(0, 0, 0, 0.2);
 `;
 
 const DisplayMessagesContainer = styled.div`
@@ -76,6 +73,9 @@ export const Chat: React.FC<Props> = (props) => {
     room: string;
   }
   const { room } = useParams<RouteParams>();
+
+  // const ioCookie = Cookies.get("io");
+  // if (ioCookie) console.log("cookie ---- ");
 
   useEffect(() => {
     const socket = io.connect("localhost:4000");
@@ -130,27 +130,28 @@ export const Chat: React.FC<Props> = (props) => {
 
   return (
     <>
+      {/* <PageHeader
+        roomName={`${room.charAt(0).toUpperCase()}${room.slice(1)}`}
+      /> */}
       <ChatMenu users={usersInRoom} />
-      <Wrapper>
-        <PageHeader />
-        <ChatContainer>
-          <DisplayMessagesContainer>
-            <MessagesList userId={user.userId} messages={messages} />
-          </DisplayMessagesContainer>
-          <NewMessageContainer>
-            <Form onSubmit={sendMessage} autoComplete="off">
-              <InputWrapper>
-                <ChatInput
-                  id="text"
-                  handleChange={handleTextChange}
-                  value={textInput}
-                />
-                <Button>SEND</Button>
-              </InputWrapper>
-            </Form>
-          </NewMessageContainer>
-        </ChatContainer>
-      </Wrapper>
+      <RoomsMenu />
+      <ChatContainer>
+        <DisplayMessagesContainer>
+          <MessagesList userId={user.userId} messages={messages} />
+        </DisplayMessagesContainer>
+        <NewMessageContainer>
+          <Form onSubmit={sendMessage} autoComplete="off">
+            <InputWrapper>
+              <ChatInput
+                id="text"
+                handleChange={handleTextChange}
+                value={textInput}
+              />
+              <Button>SEND</Button>
+            </InputWrapper>
+          </Form>
+        </NewMessageContainer>
+      </ChatContainer>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { MenuItem } from "./MenuItem";
+import { RoomCard } from "./RoomCard";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { checkAndSetUserContext } from "../../user";
@@ -10,7 +10,8 @@ const MenuWrapper = styled.div`
   justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 0px auto;
+  margin: 50px auto;
+  width: 675px;
 `;
 
 const menuItems = [
@@ -51,7 +52,7 @@ export default () => {
     <MenuWrapper>
       {menuItems.map((item, index) => {
         return (
-          <MenuItem
+          <RoomCard
             key={index}
             title={item.title}
             infoText={item.infoText}

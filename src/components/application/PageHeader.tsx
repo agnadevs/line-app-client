@@ -3,14 +3,12 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   padding: 10px;
-  width: 95%;
-  height: 40%;
+  width: 100%;
+  height: 50px;
   color: #394648;
   margin: 0 auto;
-  margin-right: 5px;
   background-color: #fafded;
 `;
 
@@ -19,10 +17,13 @@ const Header = styled.h1`
   margin: 50px;
 `;
 
-export const PageHeader = () => {
+type Props = {
+  roomName: string;
+};
+export const PageHeader: React.FC<Props> = ({ roomName }) => {
   return (
     <Container>
-      <Header>React Chatroom</Header>
+      <Header>{roomName}</Header>
     </Container>
   );
 };

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import Menu from "./components/Menu/Menu";
+import Lounge from "./components/Lounge/Lounge";
 import { Chat } from "./components/Chat/Chat";
 import { Login } from "./components/Login";
 import { LoggedInRoute } from "./components/Application/LoggedInRoute";
@@ -18,7 +18,7 @@ export default () => {
               {!!Cookies.get("user") ? <Redirect to="/menu" /> : <Login />}
             </Route>
 
-            <LoggedInRoute path="/menu" component={Menu} />
+            <LoggedInRoute path="/menu" component={Lounge} />
             <LoggedInRoute path="/chat/:room" component={Chat} />
 
             <Route component={NotFound} />
@@ -35,14 +35,14 @@ const NotFound = () => {
 
 /*
 1. / KLAR ------ Context API för att spara user info globalt
+1.5 / KLAR ------ Spara alla users som är i ett chatrum i context
+  - utfällbar del till hö/vä med lista över alla namn i chatten "just nu".
 2. / KLAR ------ Rooms
   - Spara ner meddelanden, hitta format som funkar.
 3. / KLAR ------ Routing
     - automatiskt komma vidare till menu när angett namn
     - automatiskt tas tillbaka till welcome on cookie tas bort/expires.
 
-1.5 Spara alla users som är i ett chatrum i context
-  - utfällbar del till hö/vä med lista över alla namn i chatten "just nu".
 4. Header till chat room med tillbaka knapp, namn på rummet etc.
 5. Omstrukturering --- Home > Menu | Chat < Home
 */
