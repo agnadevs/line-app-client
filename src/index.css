@@ -107,7 +107,6 @@ section {
 body {
   line-height: 1;
   background-color: #394648;
-  padding: 50px;
 }
 ol,
 ul {
@@ -145,5 +144,5 @@ button {
   font-family: "Raleway", sans-serif;
 }
 input {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: "IBM Plex Mono", monospace;
 }

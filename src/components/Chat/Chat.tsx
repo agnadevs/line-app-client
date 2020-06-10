@@ -1,13 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, Fragment } from "react";
 import io from "socket.io-client";
 import { ChatInput } from "./ChatInput";
 import { MessagesList } from "./MessagesList";
-import { ChatMessage } from "../../types";
+import { ChatMessage, User } from "../../types";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { checkAndSetUserContext } from "../../user";
 import { store } from "../../state/store";
+import { ChatMenu } from "../Application/ChatMenu";
+import { PageHeader } from "../Application/PageHeader";
 
 interface MatchParams {
   name: string;
@@ -15,11 +17,18 @@ interface MatchParams {
 
 interface Props extends RouteComponentProps<MatchParams> {}
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+`;
 const ChatContainer = styled.div`
-  width: 100%;
-  height: 90vh;
+  height: 60%;
   display: grid;
   grid-template-rows: auto 60px;
+  margin: 0px auto;
+  padding: 5px;
+  box-shadow: -3px 0px 5px 0px rgba(0, 0, 0, 0.2);
 `;
 
 const DisplayMessagesContainer = styled.div`
@@ -53,9 +62,12 @@ const Button = styled.button`
 `;
 
 export const Chat: React.FC<Props> = (props) => {
-  const [socketState, setSocketState] = useState<SocketIOClient.Socket | null>(null)
+  const [socketState, setSocketState] = useState<SocketIOClient.Socket | null>(
+    null
+  );
   const [textInput, setTextInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
 
   const { state, dispatch } = useContext(store);
   const { user } = state;
@@ -65,20 +77,23 @@ export const Chat: React.FC<Props> = (props) => {
   }
   const { room } = useParams<RouteParams>();
 
-
   useEffect(() => {
     const socket = io.connect("localhost:4000");
-    setSocketState(socket)
+    setSocketState(socket);
 
     fetch(`http://localhost:4000/api/chat/${room}`)
-      .then(res => res.json())
-      .then(res => setMessages((messages) => [...messages, ...res]))
-      .catch(err => console.log(err))
+      .then((res) => res.json())
+      .then((res) => setMessages((messages) => [...messages, ...res]))
+      .catch((err) => console.log(err));
 
     checkAndSetUserContext(user, dispatch);
     socket.emit("joinRoom", {
       user: user,
       room,
+    });
+
+    socket.on("activeUsersInRoom", (activeUsers: User[]) => {
+      setUsersInRoom(activeUsers);
     });
 
     socket.on("messageFromServer", (chatMessage: ChatMessage) => {
@@ -92,7 +107,7 @@ export const Chat: React.FC<Props> = (props) => {
       });
 
       socket.disconnect();
-      setSocketState(null)
+      setSocketState(null);
     };
   }, [dispatch, room, user]);
 
@@ -107,29 +122,35 @@ export const Chat: React.FC<Props> = (props) => {
         userName: user.userName,
         userId: user.userId,
         text: textInput,
-        timestamp: new Date()
+        timestamp: new Date(),
       });
     }
     setTextInput("");
   };
 
   return (
-    <ChatContainer>
-      <DisplayMessagesContainer>
-        <MessagesList userId={user.userId} messages={messages} />
-      </DisplayMessagesContainer>
-      <NewMessageContainer>
-        <Form onSubmit={sendMessage} autoComplete="off">
-          <InputWrapper>
-            <ChatInput
-              id="text"
-              handleChange={handleTextChange}
-              value={textInput}
-            />
-            <Button>SEND</Button>
-          </InputWrapper>
-        </Form>
-      </NewMessageContainer>
-    </ChatContainer>
+    <>
+      <ChatMenu users={usersInRoom} />
+      <Wrapper>
+        <PageHeader />
+        <ChatContainer>
+          <DisplayMessagesContainer>
+            <MessagesList userId={user.userId} messages={messages} />
+          </DisplayMessagesContainer>
+          <NewMessageContainer>
+            <Form onSubmit={sendMessage} autoComplete="off">
+              <InputWrapper>
+                <ChatInput
+                  id="text"
+                  handleChange={handleTextChange}
+                  value={textInput}
+                />
+                <Button>SEND</Button>
+              </InputWrapper>
+            </Form>
+          </NewMessageContainer>
+        </ChatContainer>
+      </Wrapper>
+    </>
   );
 };

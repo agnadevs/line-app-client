@@ -9,7 +9,8 @@ export type User = {
   userName: string;
   userId: string;
   createdAt: string;
-}
+  socketId: string;
+};
 
 type Data = {
   name: string;
