@@ -4,6 +4,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { checkAndSetUserContext } from "../../user";
 import { store } from "../../state/store";
+import { roomsContext } from "../../state/roomsContext";
+import { Room } from "../../types";
 
 const MenuWrapper = styled.div`
   display: flex;
@@ -14,50 +16,27 @@ const MenuWrapper = styled.div`
   width: 675px;
 `;
 
-const menuItems = [
-  {
-    title: "React",
-    infoText: "This is a room about React",
-    imageURL: "",
-    path: "/chat/react",
-  },
-  {
-    title: "Vue",
-    infoText: "This is a room about Vue",
-    imageURL: "",
-    path: "/chat/vue",
-  },
-  {
-    title: "Angular",
-    infoText: "This is a room about Angular",
-    imageURL: "",
-    path: "/chat/angular",
-  },
-  {
-    title: "Svelte",
-    infoText: "This is a room about Svelte",
-    imageURL: "",
-    path: "/chat/svelte",
-  },
-];
-
 export default () => {
   const { state, dispatch } = useContext(store);
+  const { roomsState } = useContext(roomsContext);
+  const { rooms } = roomsState;
 
   useEffect(() => {
     checkAndSetUserContext(state.user, dispatch);
   }, []);
 
+  if (!rooms) return null;
+
   return (
     <MenuWrapper>
-      {menuItems.map((item, index) => {
+      {rooms.map((room: Room, index) => {
         return (
           <RoomCard
             key={index}
-            title={item.title}
-            infoText={item.infoText}
-            onClick={() => console.log(item.title)}
-            path={item.path}
+            title={room.title}
+            infoText={room.infoText}
+            onClick={() => console.log(room.title)}
+            path={room.path}
           />
         );
       })}

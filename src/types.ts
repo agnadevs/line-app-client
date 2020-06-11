@@ -15,3 +15,11 @@ export type User = {
 type Data = {
   name: string;
 };
+
+export type Room = {
+  title: string;
+  infoText: string;
+  imgURL?: string;
+  onClick?: () => void;
+  path: string;
+};

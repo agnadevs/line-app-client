@@ -7,23 +7,26 @@ import Cookies from "js-cookie";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import { StateProvider } from "./state/store";
+import { RoomsProvider } from "./state/roomsContext";
 
 export default () => {
   return (
     <Fragment>
       <StateProvider>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/" exact>
-              {!!Cookies.get("user") ? <Redirect to="/menu" /> : <Login />}
-            </Route>
+        <RoomsProvider>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" exact>
+                {!!Cookies.get("user") ? <Redirect to="/menu" /> : <Login />}
+              </Route>
 
-            <LoggedInRoute path="/menu" component={Lounge} />
-            <LoggedInRoute path="/chat/:room" component={Chat} />
+              <LoggedInRoute path="/menu" component={Lounge} />
+              <LoggedInRoute path="/chat/:room" component={Chat} />
 
-            <Route component={NotFound} />
-          </Switch>
-        </BrowserRouter>
+              <Route component={NotFound} />
+            </Switch>
+          </BrowserRouter>
+        </RoomsProvider>
       </StateProvider>
     </Fragment>
   );

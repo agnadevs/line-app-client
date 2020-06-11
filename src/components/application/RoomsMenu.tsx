@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { Room } from "../../types";
+import { roomsContext } from "../../state/roomsContext";
 
 const MenuWrapper = styled.div`
   top: 0;
@@ -62,23 +64,27 @@ const StyledLink = styled(Link)`
   }
 `;
 
+type Props = {
+  rooms: Room[];
+};
+
 export const RoomsMenu: React.FC = () => {
+  const { roomsState } = useContext(roomsContext);
+  const { rooms } = roomsState;
+
+  if (!rooms) return null;
+
   return (
     <MenuWrapper>
       <Title>MENU</Title>
       <UserList>
-        <ListItem>
-          <StyledLink to="/chat/vue">Vue</StyledLink>
-        </ListItem>
-        <ListItem>
-          <StyledLink to="/chat/react">React</StyledLink>
-        </ListItem>
-        <ListItem>
-          <StyledLink to="/chat/angular">Angular</StyledLink>
-        </ListItem>
-        <ListItem>
-          <StyledLink to="/chat/svelte">Svelte</StyledLink>
-        </ListItem>
+        {rooms.map((room: Room, index) => {
+          return (
+            <ListItem key={index}>
+              <StyledLink to={room.path}>{room.title}</StyledLink>
+            </ListItem>
+          );
+        })}
         <ListItem>
           <StyledLink to="/">Lounge</StyledLink>
         </ListItem>
