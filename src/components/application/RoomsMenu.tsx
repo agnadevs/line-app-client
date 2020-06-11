@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Room } from "../../types";
 import { roomsContext } from "../../state/roomsContext";
+import { ReactComponent as BackIcon } from "../../assets/back-caret.svg";
 
 const MenuWrapper = styled.div`
   top: 0;
@@ -53,7 +54,8 @@ const ListItem = styled.li`
   list-style-type: none;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link)<Props>`
+  font-weight: ${(props: any) => (props.highlight ? "bold" : "normal")};
   display: block;
   text-decoration: none;
   color: inherit;
@@ -65,12 +67,17 @@ const StyledLink = styled(Link)`
 `;
 
 type Props = {
-  rooms: Room[];
+  highlight: boolean;
 };
 
 export const RoomsMenu: React.FC = () => {
   const { roomsState } = useContext(roomsContext);
   const { rooms } = roomsState;
+
+  interface RouteParams {
+    room: string;
+  }
+  const params = useParams<RouteParams>();
 
   if (!rooms) return null;
 
@@ -79,14 +86,22 @@ export const RoomsMenu: React.FC = () => {
       <Title>MENU</Title>
       <UserList>
         {rooms.map((room: Room, index) => {
+          const isActiveRoom = params.room === room.title.toLowerCase();
           return (
             <ListItem key={index}>
-              <StyledLink to={room.path}>{room.title}</StyledLink>
+              <StyledLink to={room.path} highlight={isActiveRoom}>
+                {isActiveRoom ? room.title.toUpperCase() : room.title}
+              </StyledLink>
             </ListItem>
           );
         })}
+        <hr />
+        <br />
         <ListItem>
-          <StyledLink to="/">Lounge</StyledLink>
+          <StyledLink to="/" highlight={true}>
+            <BackIcon />
+            Lounge
+          </StyledLink>
         </ListItem>
       </UserList>
     </MenuWrapper>

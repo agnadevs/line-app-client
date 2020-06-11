@@ -74,8 +74,6 @@ export const Chat: React.FC<Props> = (props) => {
   }
   const { room } = useParams<RouteParams>();
 
-  // const ioCookie = Cookies.get("io");
-  // if (ioCookie) console.log("cookie ---- ");
 
   useEffect(() => {
     const socket = io.connect("localhost:4000");
@@ -101,6 +99,7 @@ export const Chat: React.FC<Props> = (props) => {
     });
 
     return () => {
+      setMessages([]);
       socket.emit("leaveRoom", {
         user: user,
         room,
