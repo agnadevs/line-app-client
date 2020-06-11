@@ -11,6 +11,7 @@ const colors: string[] = [
 
 const checkAndSetUserContext = (user: any, dispatch: any) => {
   if (!user.userName) {
+    console.log(userCookie);
     if (userCookie) {
       const parsedUser = JSON.parse(userCookie);
       dispatch({

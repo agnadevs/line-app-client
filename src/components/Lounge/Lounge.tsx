@@ -6,14 +6,14 @@ import { checkAndSetUserContext } from "../../user";
 import { store } from "../../state/store";
 import { roomsContext } from "../../state/roomsContext";
 import { Room } from "../../types";
+import { PageHeader } from "../Application/PageHeader";
 
 const MenuWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
   flex-direction: row;
   flex-wrap: wrap;
   margin: 50px auto;
-  width: 675px;
+  padding: 20px;
 `;
 
 export default () => {
@@ -28,18 +28,21 @@ export default () => {
   if (!rooms) return null;
 
   return (
-    <MenuWrapper>
-      {rooms.map((room: Room, index) => {
-        return (
-          <RoomCard
-            key={index}
-            title={room.title}
-            infoText={room.infoText}
-            onClick={() => console.log(room.title)}
-            path={room.path}
-          />
-        );
-      })}
-    </MenuWrapper>
+    <>
+      <PageHeader />
+      <MenuWrapper>
+        {rooms.map((room: Room, index) => {
+          return (
+            <RoomCard
+              key={index}
+              title={room.title}
+              infoText={room.infoText}
+              onClick={() => console.log(room.title)}
+              path={room.path}
+            />
+          );
+        })}
+      </MenuWrapper>
+    </>
   );
 };

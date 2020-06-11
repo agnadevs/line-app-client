@@ -96,10 +96,10 @@ export const RoomsMenu: React.FC = () => {
           );
         })}
         <hr />
-        <br />
+        &nbsp;
         <ListItem>
           <StyledLink to="/" highlight={true}>
-            <BackIcon />
+            <BackIcon style={{ marginRight: "5px" }} />
             Lounge
           </StyledLink>
         </ListItem>

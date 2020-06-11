@@ -1,23 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import React from "react";
 import styled from "styled-components";
-import { User } from "../types";
-import { InfoBox } from "./Application/InfoBox";
-import Cookies from "js-cookie";
-import { useHistory } from "react-router";
+import LoginBtn from "./Application/LoginBtn";
 
 const WelcomeContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin: 0 auto;
   padding: 70px;
-`;
-
-const Header = styled.h1`
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 75px;
-  color: #fafded;
-  letter-spacing: 2px;
 `;
 
 const Subheader = styled.span`
@@ -27,122 +17,17 @@ const Subheader = styled.span`
   color: #fafded;
 `;
 
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+const Logo = styled.img`
+  width: 25%;
+  margin: 10px 20px;
 `;
-
-const Input = styled.input`
-  width: 400px;
-  padding: 10px;
-  margin-bottom: 10px;
-  text-align: center;
-  background-color: transparent;
-  border: 1px solid #fafded;
-  color: #fafded;
-  font-size: 20px;
-  letter-spacing: 4px;
-  ::placeholder {
-    color: #fafded;
-  }
-  :focus::placeholder {
-    color: transparent;
-  }
-  :focus {
-    outline: none;
-  }
-`;
-
-const Button = styled.button`
-  width: 200px;
-  padding: 20px;
-  margin-top: 30px;
-  background-color: #66a182;
-  color: #fafded;
-  border: none;
-  border-radius: 4px;
-  font-weight: bold;
-  letter-spacing: 2px;
-`;
-
-type Info = {
-  text: string;
-  isError: boolean;
-};
 
 export const Login: React.FC = () => {
-  const [name, setName] = useState<string>("");
-  const [users, setUsers] = useState<User[]>([]);
-  const [showInfo, setShowInfo] = useState<Info>({ text: "", isError: false });
-
-  const history = useHistory();
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    fetch("http://localhost:4000/api/users")
-      .then((res) => res.json())
-      .then((res) => setUsers(res));
-  }, []);
-
-  const enterWithName = (e: React.FormEvent<HTMLFormElement>) => {
-    setShowInfo({ text: "", isError: false });
-    e.preventDefault();
-    if (name === "") {
-      setShowInfo({ text: "Enter a name please", isError: true });
-      return;
-    }
-
-    const userNameExists = users.find(
-      (user: User) => user.userName.toLowerCase() === name.toLowerCase()
-    );
-
-    if (userNameExists) {
-      setShowInfo({
-        text: `${name} already exists. Choose a different user name.`,
-        isError: false,
-      });
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
-      return;
-    }
-
-    fetch("http://localhost:4000/api/users/newUser", {
-      method: "POST",
-      body: JSON.stringify({ name }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        Cookies.set("user", res, { expires: 7 });
-        history.push("/menu");
-      });
-  };
-
-  const onNameChange = (name: string) => {
-    setShowInfo({ text: "", isError: false });
-    setName(name);
-  };
-
   return (
     <WelcomeContainer>
-      <Header>Line App</Header>
-      <Subheader>Choose a username to join the discussion.</Subheader>
-      <Form onSubmit={enterWithName} autoComplete="off">
-        <Input
-          ref={inputRef}
-          id="userName"
-          type="text"
-          placeholder="Your name"
-          onChange={(e) => onNameChange(e.target.value)}
-        />
-        {showInfo.text ? <InfoBox {...showInfo} /> : null}
-        <Button>ENTER</Button>
-      </Form>
+      <Logo src="/logo.png" alt="logo" />
+      <Subheader>Sign in with Google to join Line</Subheader>
+      <LoginBtn />
     </WelcomeContainer>
   );
 };

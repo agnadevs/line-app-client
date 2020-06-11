@@ -18,29 +18,22 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  align-content: center;
-  width: 300px;
+  width: 500px;
   height: 250px;
   border-radius: 5px;
   background-color: #fafded;
-  margin-bottom: 20px;
+  margin: 10px;
   padding: 10px;
 `;
 
 const Title = styled.h2`
-  font-size: 35px;
-  letter-spacing: 0.9px;
+  font-size: 50px;
+  letter-spacing: 2px;
   font-weight: bold;
+  font-family: "IBM Plex Mono", monospace;
   color: #0e0f19;
-  margin: 20px 0px;
+  margin-top: 100px;
 `;
-
-const Info = styled.p`
-  color: #0e0f19;
-  padding: 10px;
-`;
-
-const Image = styled.img``;
 
 type Props = {
   title: string;
@@ -60,9 +53,7 @@ export const RoomCard: React.FC<Props> = ({
     <>
       <StyledLink to={path}>
         <Box onClick={onClick}>
-          <Title>{title}</Title>
-          <Info>{infoText}</Info>
-          <Image src={imgURL}></Image>
+          <Title>{title.toUpperCase()}</Title>
         </Box>
       </StyledLink>
     </>
