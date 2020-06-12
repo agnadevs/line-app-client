@@ -4,9 +4,9 @@ import LoginBtn from "./LoginBtn";
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  justify-content: space-between;
   padding: 10px;
-  width: 100%;
   height: auto;
   margin: 0 auto;
   background-color: #fafded;
@@ -14,17 +14,47 @@ const Container = styled.div`
 
 const Logo = styled.img`
   width: 25%;
-  margin: 10px 20px;
 `;
 
-// type Props = {
-//   userName: string;
-// };
-export const PageHeader: React.FC = () => {
+const RightContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 50px;
+  padding-right: 20px;
+`;
+
+const Name = styled.span`
+  font-size: 18px;
+  margin-left: 10px;
+`;
+
+const Image = styled.div`
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: #d5dcf9;
+`;
+
+type Props = {
+  userName: string;
+};
+export const PageHeader: React.FC<Props> = ({ userName }) => {
   return (
     <Container>
       <Logo src="/logo.png" alt="logo" />
-      <LoginBtn />
+      <RightContainer>
+        <User>
+          <Image></Image>
+          <Name>Salt Bae</Name>
+        </User>
+        <LoginBtn />
+      </RightContainer>
     </Container>
   );
 };

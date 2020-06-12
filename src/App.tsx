@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Lounge from "./components/Lounge/Lounge";
 import { Chat } from "./components/Chat/Chat";
 import { Login } from "./components/Login";
@@ -19,8 +19,8 @@ export default () => {
           <RoomsProvider>
             <BrowserRouter>
               <Switch>
-                <Route path="/" exact component={Auth}/>
-                <Route path="/login" exact component={Login}/>
+                <Route path="/" exact component={Auth} />
+                <Route path="/login" exact component={Login} />
                 <LoggedInRoute path="/lounge" component={Lounge} />
                 <LoggedInRoute path="/chat/:room" component={Chat} />
 

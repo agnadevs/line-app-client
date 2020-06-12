@@ -18,13 +18,14 @@ const Subheader = styled.span`
 `;
 
 const Logo = styled.img`
+  width: 50%;
   margin: 10px 20px;
 `;
 
 export const Login: React.FC = () => {
   return (
     <WelcomeContainer>
-      <Logo src="/logo.png" alt="logo" />
+      <Logo src="/logo_light.png" alt="logo" />
       <LoginBtn />
     </WelcomeContainer>
   );

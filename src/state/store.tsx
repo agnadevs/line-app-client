@@ -39,7 +39,7 @@ const StateProvider: React.FC = ({ children }) => {
           }
           return state;
         default:
-          throw new Error();
+          return state;
       }
     },
     initialState
