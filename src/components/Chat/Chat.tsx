@@ -74,14 +74,13 @@ export const Chat: React.FC<Props> = (props) => {
   }
   const { room } = useParams<RouteParams>();
 
-
   useEffect(() => {
     const socket = io.connect("localhost:4000");
     setSocketState(socket);
 
     fetch(`http://localhost:4000/api/chat/${room}`)
       .then((res) => res.json())
-      .then((res) => setMessages((messages) => [...messages, ...res]))
+      .then((res) => setMessages((messages) => [...messages, ...res.data]))
       .catch((err) => console.log(err));
 
     checkAndSetUserContext(user, dispatch);

@@ -49,13 +49,15 @@ const UserList = styled.ul`
   font-weight: 100;
 `;
 
-const ListItem = styled.li`
+const ListItem = styled.li<Props>`
   padding-bottom: 30px;
   list-style-type: none;
+  & > a {
+    font-weight: ${(props: any) => (props.highlight ? "bold" : "normal")};
+  }
 `;
 
-const StyledLink = styled(Link)<Props>`
-  font-weight: ${(props: any) => (props.highlight ? "bold" : "normal")};
+const StyledLink = styled(Link)`
   display: block;
   text-decoration: none;
   color: inherit;
@@ -88,8 +90,8 @@ export const RoomsMenu: React.FC = () => {
         {rooms.map((room: Room, index) => {
           const isActiveRoom = params.room === room.title.toLowerCase();
           return (
-            <ListItem key={index}>
-              <StyledLink to={room.path} highlight={isActiveRoom}>
+            <ListItem key={index} highlight={isActiveRoom}>
+              <StyledLink to={room.path}>
                 {isActiveRoom ? room.title.toUpperCase() : room.title}
               </StyledLink>
             </ListItem>
@@ -97,8 +99,8 @@ export const RoomsMenu: React.FC = () => {
         })}
         <hr />
         &nbsp;
-        <ListItem>
-          <StyledLink to="/" highlight={true}>
+        <ListItem highlight={true}>
+          <StyledLink to="/">
             <BackIcon style={{ marginRight: "5px" }} />
             Lounge
           </StyledLink>

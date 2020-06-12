@@ -28,7 +28,6 @@ const LoginBtn: React.FC = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.data);
         if (res.err) {
           setError({
             isError: true,
