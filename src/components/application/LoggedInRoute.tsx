@@ -1,13 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
 import Cookies from "js-cookie";
+import { authContext } from "../../state/authContext";
 
 export interface LoggedInRouteProps extends RouteProps {}
 
 export const LoggedInRoute: React.FC<LoggedInRouteProps> = (props) => {
-  const isAuthenticated = !!Cookies.get("user");
+  const { authState } = useContext(authContext);
 
-  if (isAuthenticated) {
+  if (authState.isLoggedIn) {
     return <Route {...props} />;
   }
   return <Redirect to="/" />;

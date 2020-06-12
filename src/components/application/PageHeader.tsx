@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import LoginBtn from "./LoginBtn";
 
 const Container = styled.div`
   display: flex;
@@ -23,6 +24,7 @@ export const PageHeader: React.FC = () => {
   return (
     <Container>
       <Logo src="/logo.png" alt="logo" />
+      <LoginBtn />
     </Container>
   );
 };

@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-const userCookie = Cookies.get("user");
 
 const colors: string[] = [
   "#d5dcf9",
@@ -10,8 +9,8 @@ const colors: string[] = [
 ];
 
 const checkAndSetUserContext = (user: any, dispatch: any) => {
+  const userCookie = Cookies.get("user");
   if (!user.userName) {
-    console.log(userCookie);
     if (userCookie) {
       const parsedUser = JSON.parse(userCookie);
       dispatch({

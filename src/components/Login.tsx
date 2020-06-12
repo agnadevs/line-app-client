@@ -18,7 +18,6 @@ const Subheader = styled.span`
 `;
 
 const Logo = styled.img`
-  width: 25%;
   margin: 10px 20px;
 `;
 
@@ -26,7 +25,6 @@ export const Login: React.FC = () => {
   return (
     <WelcomeContainer>
       <Logo src="/logo.png" alt="logo" />
-      <Subheader>Sign in with Google to join Line</Subheader>
       <LoginBtn />
     </WelcomeContainer>
   );
