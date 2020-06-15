@@ -7,6 +7,7 @@ import { roomsContext } from "../../state/roomsContext";
 import { Room } from "../../types";
 import { PageHeader } from "../Application/PageHeader";
 import { Modal } from "../Application/Modal";
+import { EditUser } from "../Application/EditUser";
 
 const MenuWrapper = styled.div`
   display: flex;
@@ -40,7 +41,9 @@ export default () => {
 
   return (
     <>
-      <Modal open={openModal} closeModalCallback={() => setOpenModal(false)} />
+      <Modal open={openModal} closeModalCallback={() => setOpenModal(false)}>
+        <EditUser userName={user.userName} />
+      </Modal>
       <PageHeader
         userName={user.userName}
         editUserCallback={() => setOpenModal(true)}

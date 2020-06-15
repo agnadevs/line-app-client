@@ -29,12 +29,12 @@ type Props = {
 };
 
 export const Modal: React.FC<Props> = (props) => {
-  console.log(props.children);
   return (
     <StyledModal {...props}>
       <Content>
         <button onClick={() => props.closeModalCallback()}>Close</button>
         <h2>I am a modal</h2>
+        {props.children}
       </Content>
     </StyledModal>
   );
