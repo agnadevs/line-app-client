@@ -127,7 +127,6 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-h1,
 h2,
 h3,
 h4,
@@ -143,6 +142,7 @@ li,
 button {
   font-family: "Raleway", sans-serif;
 }
+h1,
 input {
   font-family: "IBM Plex Mono", monospace;
 }

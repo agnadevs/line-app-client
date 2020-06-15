@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { RoomCard } from "./RoomCard";
 import styled from "styled-components";
 import { checkAndSetUserContext } from "../../user";
-import { store } from "../../state/store";
+import { userContext } from "../../state/userContext";
 import { roomsContext } from "../../state/roomsContext";
 import { Room } from "../../types";
 import { PageHeader } from "../Application/PageHeader";
@@ -18,34 +18,36 @@ const MenuWrapper = styled.div`
   padding: 20px;
 `;
 
-type MyUser = {
-  userName: string;
-  userId: string;
-  color: string;
-};
-
 export default () => {
   const [openModal, setOpenModal] = useState(false);
-  const [user, setUser] = useState<MyUser | null>(null);
-
-  const { state, dispatch } = useContext(store);
+  const { userState, dispatch } = useContext(userContext);
   const { roomsState } = useContext(roomsContext);
-  const { rooms } = roomsState;
 
   useEffect(() => {
-    checkAndSetUserContext(state.user, dispatch);
-    setUser(state.user);
-  }, [state.user, dispatch]);
+    checkAndSetUserContext(userState.user, dispatch);
+  }, [userState.user, dispatch]);
 
-  if (!rooms || !user) return null;
+  if (!roomsState.rooms || !userState.user) return null;
+
+  const { user } = userState;
+  const { rooms } = roomsState;
 
   return (
     <>
-      <Modal open={openModal} closeModalCallback={() => setOpenModal(false)}>
-        <EditUser userName={user.userName} />
+      <Modal
+        open={openModal}
+        modalName="MY PROFILE"
+        closeModalCallback={() => setOpenModal(false)}
+      >
+        <EditUser
+          userName={user.userName}
+          userId={user.userId}
+          profileImageURL={user.profileImageURL}
+        />
       </Modal>
       <PageHeader
         userName={user.userName}
+        profileImageURL={user.profileImageURL}
         editUserCallback={() => setOpenModal(true)}
       />
       <MenuWrapper>

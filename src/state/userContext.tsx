@@ -3,6 +3,7 @@ import React, { createContext, useReducer } from "react";
 type User = {
   userName: string;
   userId: string;
+  profileImageURL: string;
   color: string;
 };
 
@@ -10,34 +11,31 @@ const initialState = {
   user: {
     userName: "",
     userId: "",
+    profileImageURL: "",
     color: "",
   },
 };
 
 type ContextProps = {
-  state: State;
+  userState: State;
   dispatch: ({ type }: { type: string; data: User }) => void;
 };
 
-const store = createContext({} as ContextProps);
-const { Provider } = store;
+const userContext = createContext({} as ContextProps);
+const { Provider } = userContext;
 
 type State = {
   user: User;
 };
 
-type Action = { type: String; data?: User };
+type Action = { type: String; data: User };
 
-const StateProvider: React.FC = ({ children }) => {
-  const [state, dispatch] = useReducer<React.Reducer<State, Action>>(
+const UserProvider: React.FC = ({ children }) => {
+  const [userState, dispatch] = useReducer<React.Reducer<State, Action>>(
     (state, action) => {
       switch (action.type) {
         case "SET_USER":
-          const { data } = action;
-          if (data) {
-            state.user = data;
-          }
-          return state;
+          return { ...state, user: action.data };
         default:
           return state;
       }
@@ -45,7 +43,7 @@ const StateProvider: React.FC = ({ children }) => {
     initialState
   );
 
-  return <Provider value={{ state, dispatch }}>{children}</Provider>;
+  return <Provider value={{ userState, dispatch }}>{children}</Provider>;
 };
 
-export { store, StateProvider };
+export { userContext, UserProvider };

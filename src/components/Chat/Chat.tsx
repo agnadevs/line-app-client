@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { checkAndSetUserContext } from "../../user";
-import { store } from "../../state/store";
+import { userContext } from "../../state/userContext";
 import { ChatMenu } from "../Application/ChatMenu";
 import { RoomsMenu } from "../Application/RoomsMenu";
 
@@ -64,8 +64,8 @@ export const Chat: React.FC<Props> = (props) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
 
-  const { state, dispatch } = useContext(store);
-  const { user } = state;
+  const { userState, dispatch } = useContext(userContext);
+  const { user } = userState;
 
   interface RouteParams {
     room: string;

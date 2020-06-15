@@ -1,14 +1,44 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const slideDown = keyframes`
+  0% {
+    transform: translateY(-30px);
+    opacity: 0;
+    height: 0;
+  }
+  5% {
+    transform: translateY(0);
+    opacity: 1;
+    height: 30px;
+  }
+  50%{
+    transform: translateY(0);
+    opacity: 1;
+    height: 30px;
+  }
+  95%{
+    transform: translateY(0);
+    opacity: 1;
+    height: 30px;
+  }
+  100% {
+    transform: translateY(-30px);
+    opacity: 0;
+    height: 0px;
+  }
+`;
 
 const Container = styled.div<Props>`
+  animation: ${slideDown} 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   display: flex;
   align-items: center;
-  background-color: ${(props) => (props.isError ? "#FD9187" : "#C8E5E0")};
-  width: 400px;
-  padding: 10px;
+  background-color: ${(props) => (props.isError ? "#FD9187" : "#caffb9")};
+  color: ${(props) => (props.isError ? "#FC594A" : "#33cc00")};
+  width: 100%;
+  height: 30px;
   border-radius: 4px;
-  margin-bottom: 10px;
+  margin-left: 10px;
 `;
 
 const Message = styled.span`

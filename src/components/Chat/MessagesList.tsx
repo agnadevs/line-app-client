@@ -1,9 +1,9 @@
 import React, { useContext, useRef, useEffect } from "react";
 import { ChatMessage } from "../../types";
 import { Message } from "./Message";
-import { LineManager } from './LineManager'
+import { LineManager } from "./LineManager";
 import styled from "styled-components";
-import { store } from "../../state/store";
+import { userContext } from "../../state/userContext";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,45 +16,39 @@ type Props = {
 };
 
 export const MessagesList: React.FC<Props> = ({ messages, userId }) => {
-  const { state } = useContext(store);
+  const { userState } = useContext(userContext);
 
-  const messagesEndRef = useRef<HTMLDivElement | null>(null)
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
-    if(messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
-  useEffect(()=>{
-    scrollToBottom()
-  }, [messages])
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
-  if(!messages.length) return null
+  if (!messages.length) return null;
 
   return (
-    <Wrapper >
-
-        { messages.map((message: ChatMessage, index: number) => {
-
-          if(message.userName === 'Line manager'){
-            return (
-              <LineManager
-                key={index}
-                messageText={message.text}
-              />
-            )} else {
-              return (
-                <Message
-                key={index}
-                isUser={userId === message.userId}
-                message={message}
-                color={state.user.color}
-              />
-              )
-            }
-          })}
-          <div ref={messagesEndRef}></div>
+    <Wrapper>
+      {messages.map((message: ChatMessage, index: number) => {
+        if (message.userName === "Line manager") {
+          return <LineManager key={index} messageText={message.text} />;
+        } else {
+          return (
+            <Message
+              key={index}
+              isUser={userId === message.userId}
+              message={message}
+              color={userState.user.color}
+            />
+          );
+        }
+      })}
+      <div ref={messagesEndRef}></div>
     </Wrapper>
   );
 };

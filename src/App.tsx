@@ -6,7 +6,7 @@ import { LoggedInRoute } from "./components/Application/LoggedInRoute";
 import { Auth } from "./components/Application/Auth";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import { StateProvider } from "./state/store";
+import { UserProvider } from "./state/userContext";
 import { RoomsProvider } from "./state/roomsContext";
 import { AuthProvider } from "./state/authContext";
 
@@ -14,7 +14,7 @@ export default () => {
   return (
     <Fragment>
       <AuthProvider>
-        <StateProvider>
+        <UserProvider>
           <RoomsProvider>
             <BrowserRouter>
               <Switch>
@@ -27,7 +27,7 @@ export default () => {
               </Switch>
             </BrowserRouter>
           </RoomsProvider>
-        </StateProvider>
+        </UserProvider>
       </AuthProvider>
     </Fragment>
   );

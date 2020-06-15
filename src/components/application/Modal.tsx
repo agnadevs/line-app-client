@@ -16,15 +16,48 @@ const StyledModal = styled.div<Props>`
 `;
 
 const Content = styled.div`
+  display: flex;
+  flex-direction: column;
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
+  border-radius: 7px;
   width: 80%;
+`;
+
+const Title = styled.div`
+  width: 100%;
+  height: 60px;
+  h1 {
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-top: 20px;
+  }
+`;
+
+const Button = styled.button`
+  width: 300px;
+  height: 40px;
+  padding: 10px;
+  margin: 10px auto;
+  background-color: #a8ccc9;
+  border: none;
+  border-radius: 3px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #3c6763;
+  :hover {
+    cursor: pointer;
+    color: #a8ccc9;
+    background-color: #3c6763;
+  }
 `;
 
 type Props = {
   open: boolean;
+  modalName: string;
   closeModalCallback: () => void;
 };
 
@@ -32,9 +65,11 @@ export const Modal: React.FC<Props> = (props) => {
   return (
     <StyledModal {...props}>
       <Content>
-        <button onClick={() => props.closeModalCallback()}>Close</button>
-        <h2>I am a modal</h2>
-        {props.children}
+        <Title>
+          <h1>{props.modalName}</h1>
+        </Title>
+        {props.open && props.children}
+        <Button onClick={() => props.closeModalCallback()}>Close</Button>
       </Content>
     </StyledModal>
   );

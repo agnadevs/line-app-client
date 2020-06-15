@@ -18,6 +18,7 @@ const checkAndSetUserContext = (user: any, dispatch: any) => {
         data: {
           userName: parsedUser.userName,
           userId: parsedUser.userId,
+          profileImageURL: parsedUser.profileImageURL,
           color: colors[Math.floor(Math.random() * colors.length)],
         },
       });
