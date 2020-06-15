@@ -1,11 +1,10 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment } from "react";
 import Lounge from "./components/Lounge/Lounge";
 import { Chat } from "./components/Chat/Chat";
 import { Login } from "./components/Login";
 import { LoggedInRoute } from "./components/Application/LoggedInRoute";
 import { Auth } from "./components/Application/Auth";
-import Cookies from "js-cookie";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { StateProvider } from "./state/store";
 import { RoomsProvider } from "./state/roomsContext";

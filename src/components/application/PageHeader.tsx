@@ -19,6 +19,9 @@ const Logo = styled.img`
 const RightContainer = styled.div`
   display: flex;
   flex-direction: column;
+  :hover {
+    cursor: pointer;
+  }
 `;
 
 const User = styled.div`
@@ -43,15 +46,16 @@ const Image = styled.div`
 
 type Props = {
   userName: string;
+  editUserCallback: () => void;
 };
-export const PageHeader: React.FC<Props> = ({ userName }) => {
+export const PageHeader: React.FC<Props> = ({ userName, editUserCallback }) => {
   return (
     <Container>
       <Logo src="/logo.png" alt="logo" />
-      <RightContainer>
+      <RightContainer onClick={editUserCallback}>
         <User>
           <Image></Image>
-          <Name>Salt Bae</Name>
+          <Name>{userName}</Name>
         </User>
         <LoginBtn />
       </RightContainer>

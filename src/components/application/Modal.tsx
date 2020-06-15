@@ -29,6 +29,7 @@ type Props = {
 };
 
 export const Modal: React.FC<Props> = (props) => {
+  console.log(props.children);
   return (
     <StyledModal {...props}>
       <Content>

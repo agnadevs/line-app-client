@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { User } from "../../types";
-import { Link } from "react-router-dom";
 
 const MenuWrapper = styled.div`
   top: 0;
@@ -51,17 +50,6 @@ const ListItem = styled.li`
   list-style-type: none;
 `;
 
-const StyledLink = styled(Link)`
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.3s;
-  -webkit-transition: all 0.3s;
-  :hover {
-    color: #aaa;
-  }
-`;
-
 type Props = {
   users: User[];
 };
@@ -75,9 +63,6 @@ export const ChatMenu: React.FC<Props> = ({ users }) => {
           return <ListItem key={index}>{user.userName}</ListItem>;
         })}
       </UserList>
-      {/* <ListItem>
-          <StyledLink to="/">Back to Lobby</StyledLink>
-        </ListItem> */}
     </MenuWrapper>
   );
 };

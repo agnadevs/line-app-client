@@ -10,13 +10,6 @@ const WelcomeContainer = styled.div`
   padding: 70px;
 `;
 
-const Subheader = styled.span`
-  text-align: center;
-  margin-bottom: 50px;
-  font-size: 20px;
-  color: #fafded;
-`;
-
 const Logo = styled.img`
   width: 50%;
   margin: 10px 20px;

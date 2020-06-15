@@ -5,13 +5,13 @@ import { Route, Redirect } from "react-router-dom";
 
 export const Auth = () => {
   const hasCookie = !!Cookies.get("user");
-  const { authState, dispatch } = useContext(authContext);
+  const { dispatch } = useContext(authContext);
 
   useEffect(() => {
     if (hasCookie) {
       dispatch({ type: "SET_AUTH", data: true });
     }
-  }, []);
+  }, [hasCookie, dispatch]);
 
   return (
     <div>

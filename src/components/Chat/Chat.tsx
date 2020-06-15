@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, Fragment } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import io from "socket.io-client";
 import { ChatInput } from "./ChatInput";
 import { MessagesList } from "./MessagesList";
@@ -10,8 +10,6 @@ import { checkAndSetUserContext } from "../../user";
 import { store } from "../../state/store";
 import { ChatMenu } from "../Application/ChatMenu";
 import { RoomsMenu } from "../Application/RoomsMenu";
-import { PageHeader } from "../Application/PageHeader";
-import Cookies from "js-cookie";
 
 interface MatchParams {
   name: string;
@@ -128,9 +126,6 @@ export const Chat: React.FC<Props> = (props) => {
 
   return (
     <>
-      {/* <PageHeader
-        roomName={`${room.charAt(0).toUpperCase()}${room.slice(1)}`}
-      /> */}
       <ChatMenu users={usersInRoom} />
       <RoomsMenu />
       <ChatContainer>

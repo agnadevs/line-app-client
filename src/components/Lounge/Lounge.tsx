@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RoomCard } from "./RoomCard";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { checkAndSetUserContext } from "../../user";
 import { store } from "../../state/store";
 import { roomsContext } from "../../state/roomsContext";
@@ -18,8 +17,15 @@ const MenuWrapper = styled.div`
   padding: 20px;
 `;
 
+type MyUser = {
+  userName: string;
+  userId: string;
+  color: string;
+};
+
 export default () => {
   const [openModal, setOpenModal] = useState(false);
+  const [user, setUser] = useState<MyUser | null>(null);
 
   const { state, dispatch } = useContext(store);
   const { roomsState } = useContext(roomsContext);
@@ -27,17 +33,18 @@ export default () => {
 
   useEffect(() => {
     checkAndSetUserContext(state.user, dispatch);
-    console.log(state.user);
-    console.log("useEffect");
+    setUser(state.user);
   }, [state.user, dispatch]);
 
-  if (!rooms) return null;
-  console.log(state.user);
+  if (!rooms || !user) return null;
 
   return (
     <>
       <Modal open={openModal} closeModalCallback={() => setOpenModal(false)} />
-      <PageHeader userName={state.user.userName} />
+      <PageHeader
+        userName={user.userName}
+        editUserCallback={() => setOpenModal(true)}
+      />
       <MenuWrapper>
         {rooms.map((room: Room, index) => {
           return (
