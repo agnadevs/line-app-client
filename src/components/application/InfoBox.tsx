@@ -32,18 +32,18 @@ const slideDown = keyframes`
 const Container = styled.div<Props>`
   animation: ${slideDown} 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   display: flex;
-  align-items: center;
+  align-self: center;
   background-color: ${(props) => (props.isError ? "#FD9187" : "#caffb9")};
   color: ${(props) => (props.isError ? "#FC594A" : "#33cc00")};
-  width: 100%;
-  height: 30px;
+  width: 300px;
+  height: 40px;
   border-radius: 4px;
-  margin-left: 10px;
 `;
 
 const Message = styled.span`
   font-size: 14px;
   margin: 0 auto;
+  padding: 10px;
 `;
 
 type Props = {
