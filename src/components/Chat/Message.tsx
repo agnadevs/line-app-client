@@ -28,7 +28,7 @@ const Time = styled.p<Props>`
   display:none;
 `;
 
-const Text = styled.p`
+const Text = styled.div`
   padding: 10px 15px;
   line-height: 20px;
   font-family: "IBM Plex Mono", monospace;
