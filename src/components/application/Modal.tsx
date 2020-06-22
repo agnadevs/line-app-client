@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 const StyledModal = styled.div<Props>`
@@ -62,13 +62,32 @@ type Props = {
 };
 
 export const Modal: React.FC<Props> = (props) => {
+  const styledModalRef = useRef<HTMLDivElement | null>(null);
+
+  const handleClick = (e: MouseEvent) => {
+    if (
+      styledModalRef.current &&
+      !styledModalRef.current.contains(e.target as Node)
+    ) {
+      props.closeModalCallback();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  });
+
   return (
     <StyledModal {...props}>
-      <Content>
+      <Content ref={styledModalRef}>
         <Title>
           <h1>{props.modalName}</h1>
         </Title>
-        {props.open && props.children}
+        {props.children}
         <Button onClick={() => props.closeModalCallback()}>Close</Button>
       </Content>
     </StyledModal>

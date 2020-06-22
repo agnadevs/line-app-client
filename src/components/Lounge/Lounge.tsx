@@ -34,17 +34,19 @@ export default () => {
 
   return (
     <>
-      <Modal
-        open={openModal}
-        modalName="MY PROFILE"
-        closeModalCallback={() => setOpenModal(false)}
-      >
-        <EditUser
-          userName={user.userName}
-          userId={user.userId}
-          profileImageURL={user.profileImageURL}
-        />
-      </Modal>
+      {openModal && (
+        <Modal
+          open={openModal}
+          modalName="MY PROFILE"
+          closeModalCallback={() => setOpenModal(false)}
+        >
+          <EditUser
+            userName={user.userName}
+            userId={user.userId}
+            profileImageURL={user.profileImageURL}
+          />
+        </Modal>
+      )}
       <PageHeader
         userName={user.userName}
         profileImageURL={user.profileImageURL}
