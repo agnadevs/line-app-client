@@ -17,9 +17,8 @@ type Data = {
 };
 
 export type Room = {
+  roomId: number;
   title: string;
-  infoText: string;
-  imgURL?: string;
-  onClick?: () => void;
-  path: string;
+  infoText?: string;
+  isPrivate: boolean;
 };

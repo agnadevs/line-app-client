@@ -67,15 +67,15 @@ export const Chat: React.FC<Props> = (props) => {
   const { user, addUser } = useContext(UserContext);
 
   interface RouteParams {
-    room: string;
+    roomId: string;
   }
-  const { room } = useParams<RouteParams>();
+  const { roomId } = useParams<RouteParams>();
 
   useEffect(() => {
     const socket = io.connect("localhost:4000");
     setSocketState(socket);
 
-    fetch(`http://localhost:4000/api/chat/${room}`)
+    fetch(`http://localhost:4000/api/chat/${roomId}`)
       .then((res) => res.json())
       .then((res) => setMessages((messages) => [...messages, ...res.data]))
       .catch((err) => console.log(err));
@@ -83,7 +83,7 @@ export const Chat: React.FC<Props> = (props) => {
     checkAndSetUserContext(user, addUser);
     socket.emit("joinRoom", {
       user: user,
-      room,
+      roomId,
     });
 
     socket.on("activeUsersInRoom", (activeUsers: User[]) => {
@@ -98,13 +98,13 @@ export const Chat: React.FC<Props> = (props) => {
       setMessages([]);
       socket.emit("leaveRoom", {
         user: user,
-        room,
+        roomId,
       });
 
       socket.disconnect();
       setSocketState(null);
     };
-  }, [addUser, room, user]);
+  }, [addUser, roomId, user]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextInput(e.target.value);

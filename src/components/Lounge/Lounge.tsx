@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { RoomCard } from "./RoomCard";
+import { NewRoom } from "./NewRoom";
 import styled from "styled-components";
 import { checkAndSetUserContext } from "../../user";
 import { UserContext } from "../../state/userContext";
@@ -21,13 +22,26 @@ const MenuWrapper = styled.div`
 export default () => {
   const [openModal, setOpenModal] = useState(false);
   const { user, addUser } = useContext(UserContext);
-  const { rooms } = useContext(RoomsContext);
+  const { rooms, setInitialRooms } = useContext(RoomsContext);
 
   useEffect(() => {
     checkAndSetUserContext(user, addUser);
   }, [user, addUser]);
 
-  if (!rooms || !user.userName) return null;
+  useEffect(() => {
+   if (user.userId !== ""){ 
+     if (rooms.length === 0) {
+      fetch(`http://localhost:4000/api/rooms/user/${user.userId}`)
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res.data);
+          setInitialRooms(res.data);
+        });
+    }
+  }
+  }, [setInitialRooms, rooms.length, user]);
+
+  if (rooms.length === 0 || !user.userName) return null;
 
   return (
     <>
@@ -49,18 +63,14 @@ export default () => {
         profileImageURL={user.profileImageURL}
         editUserCallback={() => setOpenModal(true)}
       />
+      <NewRoom />
       <MenuWrapper>
-        {rooms.map((room: Room, index) => {
-          return (
-            <RoomCard
-              key={index}
-              title={room.title}
-              infoText={room.infoText}
-              onClick={() => console.log(room.title)}
-              path={room.path}
-            />
-          );
-        })}
+        {rooms &&
+          rooms.map((room: Room, index) => {
+            return (
+              <RoomCard key={index} title={room.title} roomId={room.roomId} />
+            );
+          })}
       </MenuWrapper>
     </>
   );

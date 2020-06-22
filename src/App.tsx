@@ -21,7 +21,7 @@ export default () => {
                 <Route path="/" exact component={Auth} />
                 <Route path="/login" exact component={Login} />
                 <LoggedInRoute path="/lounge" component={Lounge} />
-                <LoggedInRoute path="/chat/:room" component={Chat} />
+                <LoggedInRoute path="/chat/:roomId" component={Chat} />
 
                 <Route component={NotFound} />
               </Switch>

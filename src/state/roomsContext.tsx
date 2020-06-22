@@ -1,49 +1,27 @@
 import React, { createContext, useState } from "react";
 import { Room } from "../types";
 
-const initialRooms = [
-  {
-    title: "React",
-    infoText: "This is a room about React",
-    imageURL: "",
-    path: "/chat/react",
-  },
-  {
-    title: "Vue",
-    infoText: "This is a room about Vue",
-    imageURL: "",
-    path: "/chat/vue",
-  },
-  {
-    title: "Angular",
-    infoText: "This is a room about Angular",
-    imageURL: "",
-    path: "/chat/angular",
-  },
-  {
-    title: "Svelte",
-    infoText: "This is a room about Svelte",
-    imageURL: "",
-    path: "/chat/svelte",
-  },
-];
-
 type ContextProps = {
-  rooms: Room[] | null;
-  updateRooms: (rooms: Room[]) => void;
+  rooms: Room[];
+  setInitialRooms: (rooms: Room[]) => void;
+  addNewRoom: (room: Room) => void;
 };
 
 const RoomsContext = createContext({} as ContextProps);
 
 const RoomsProvider: React.FC = ({ children }) => {
-  const [rooms, setRooms] = useState<Room[] | null>(initialRooms);
+  const [rooms, setRooms] = useState<Room[]>([]);
 
-  const updateRooms = (rooms: Room[]) => {
+  const setInitialRooms = (rooms: Room[]) => {
     setRooms(rooms);
   };
 
+  const addNewRoom = (newRoom: Room) => {
+    setRooms((rooms) => [...rooms, newRoom]);
+  };
+
   return (
-    <RoomsContext.Provider value={{ rooms, updateRooms }}>
+    <RoomsContext.Provider value={{ rooms, setInitialRooms, addNewRoom }}>
       {children}
     </RoomsContext.Provider>
   );

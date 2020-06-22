@@ -37,22 +37,14 @@ const Title = styled.h2`
 
 type Props = {
   title: string;
-  infoText: string;
-  imgURL?: string;
-  onClick: () => void;
-  path: string;
+  roomId: number;
 };
-export const RoomCard: React.FC<Props> = ({
-  title,
-  infoText,
-  imgURL,
-  onClick,
-  path,
-}) => {
+
+export const RoomCard: React.FC<Props> = ({ title, roomId }) => {
   return (
     <>
-      <StyledLink to={path}>
-        <Box onClick={onClick}>
+      <StyledLink to={`/chat/${roomId}`}>
+        <Box>
           <Title>{title.toUpperCase()}</Title>
         </Box>
       </StyledLink>

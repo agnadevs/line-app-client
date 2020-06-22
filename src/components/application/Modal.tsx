@@ -3,16 +3,16 @@ import styled from "styled-components";
 
 const StyledModal = styled.div<Props>`
   display: ${(props) => (props.open ? "block" : "none")};
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 `;
 
 const Content = styled.div`
@@ -62,13 +62,10 @@ type Props = {
 };
 
 export const Modal: React.FC<Props> = (props) => {
-  const styledModalRef = useRef<HTMLDivElement | null>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   const handleClick = (e: MouseEvent) => {
-    if (
-      styledModalRef.current &&
-      !styledModalRef.current.contains(e.target as Node)
-    ) {
+    if (contentRef.current && !contentRef.current.contains(e.target as Node)) {
       props.closeModalCallback();
     }
   };
@@ -83,7 +80,7 @@ export const Modal: React.FC<Props> = (props) => {
 
   return (
     <StyledModal {...props}>
-      <Content ref={styledModalRef}>
+      <Content ref={contentRef}>
         <Title>
           <h1>{props.modalName}</h1>
         </Title>

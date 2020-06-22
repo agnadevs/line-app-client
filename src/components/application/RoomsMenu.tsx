@@ -76,21 +76,21 @@ export const RoomsMenu: React.FC = () => {
   const { rooms } = useContext(RoomsContext);
 
   interface RouteParams {
-    room: string;
+    roomId: string;
   }
   const params = useParams<RouteParams>();
 
-  if (!rooms) return null;
+  if (rooms.length === 0) return null;
 
   return (
     <MenuWrapper>
       <Title>MENU</Title>
       <UserList>
         {rooms.map((room: Room, index) => {
-          const isActiveRoom = params.room === room.title.toLowerCase();
+          const isActiveRoom = Number(params.roomId) === room.roomId;
           return (
             <ListItem key={index} highlight={isActiveRoom}>
-              <StyledLink to={room.path}>
+              <StyledLink to={`/chat/${room.roomId}`}>
                 {isActiveRoom ? room.title.toUpperCase() : room.title}
               </StyledLink>
             </ListItem>
