@@ -1,17 +1,17 @@
 import React, { useEffect, useContext } from "react";
 import Cookies from "js-cookie";
-import { authContext } from "../../state/authContext";
+import { AuthContext } from "../../state/authContext";
 import { Route, Redirect } from "react-router-dom";
 
 export const Auth = () => {
   const hasCookie = !!Cookies.get("user");
-  const { dispatch } = useContext(authContext);
+  const { isUserLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
     if (hasCookie) {
-      dispatch({ type: "SET_AUTH", data: true });
+      isUserLoggedIn(true);
     }
-  }, [hasCookie, dispatch]);
+  }, [hasCookie, isUserLoggedIn]);
 
   return (
     <div>

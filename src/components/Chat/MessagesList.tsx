@@ -3,7 +3,7 @@ import { ChatMessage } from "../../types";
 import { Message } from "./Message";
 import { LineManager } from "./LineManager";
 import styled from "styled-components";
-import { userContext } from "../../state/userContext";
+import { UserContext } from "../../state/userContext";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const MessagesList: React.FC<Props> = ({ messages, userId }) => {
-  const { userState } = useContext(userContext);
+  const { user } = useContext(UserContext);
 
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -43,7 +43,7 @@ export const MessagesList: React.FC<Props> = ({ messages, userId }) => {
               key={index}
               isUser={userId === message.userId}
               message={message}
-              color={userState.user.color}
+              color={user.color}
             />
           );
         }

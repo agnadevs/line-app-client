@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { Room } from "../../types";
-import { roomsContext } from "../../state/roomsContext";
+import { RoomsContext } from "../../state/roomsContext";
 import { ReactComponent as BackIcon } from "../../assets/back-caret.svg";
 
 const MenuWrapper = styled.div`
@@ -73,8 +73,7 @@ type Props = {
 };
 
 export const RoomsMenu: React.FC = () => {
-  const { roomsState } = useContext(roomsContext);
-  const { rooms } = roomsState;
+  const { rooms } = useContext(RoomsContext);
 
   interface RouteParams {
     room: string;

@@ -1,39 +1,24 @@
-import React, { createContext, useReducer } from "react";
-
-const initialState = {
-  isLoggedIn: false,
-};
+import React, { createContext, useState } from "react";
 
 type ContextProps = {
-  authState: State;
-  dispatch: ({ type }: { type: string; data: boolean }) => void;
-};
-
-const authContext = createContext({} as ContextProps);
-const { Provider } = authContext;
-
-type State = {
   isLoggedIn: boolean;
+  isUserLoggedIn: (bool: boolean) => void;
 };
 
-type Action = { type: String; data: boolean };
+const AuthContext = createContext({} as ContextProps);
 
 const AuthProvider: React.FC = ({ children }) => {
-  const [authState, dispatch] = useReducer<React.Reducer<State, Action>>(
-    (state, action) => {
-      switch (action.type) {
-        case "SET_AUTH":
-          const { data } = action;
-          state.isLoggedIn = data;
-          return state;
-        default:
-          return state;
-      }
-    },
-    initialState
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  return <Provider value={{ authState, dispatch }}>{children}</Provider>;
+  const isUserLoggedIn = (bool: boolean) => {
+    setIsLoggedIn(bool);
+  };
+
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, isUserLoggedIn }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
-export { authContext, AuthProvider };
+export { AuthContext, AuthProvider };

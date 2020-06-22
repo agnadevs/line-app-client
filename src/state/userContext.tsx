@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useState } from "react";
 
 type User = {
   userName: string;
@@ -7,43 +7,37 @@ type User = {
   color: string;
 };
 
-const initialState = {
-  user: {
-    userName: "",
-    userId: "",
-    profileImageURL: "",
-    color: "",
-  },
-};
-
 type ContextProps = {
-  userState: State;
-  dispatch: ({ type }: { type: string; data: User }) => void;
-};
-
-const userContext = createContext({} as ContextProps);
-const { Provider } = userContext;
-
-type State = {
   user: User;
+  addUser: (user: User) => void;
+  removeUser: () => void;
 };
 
-type Action = { type: String; data: User };
+const initialUser = {
+  userName: "",
+  userId: "",
+  profileImageURL: "",
+  color: "",
+};
+
+const UserContext = createContext({} as ContextProps);
 
 const UserProvider: React.FC = ({ children }) => {
-  const [userState, dispatch] = useReducer<React.Reducer<State, Action>>(
-    (state, action) => {
-      switch (action.type) {
-        case "SET_USER":
-          return { ...state, user: action.data };
-        default:
-          return state;
-      }
-    },
-    initialState
-  );
+  const [user, setUser] = useState<User>(initialUser);
 
-  return <Provider value={{ userState, dispatch }}>{children}</Provider>;
+  const addUser = (user: User) => {
+    setUser(user);
+  };
+
+  const removeUser = () => {
+    setUser(initialUser);
+  };
+
+  return (
+    <UserContext.Provider value={{ user, addUser, removeUser }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
-export { userContext, UserProvider };
+export { UserContext, UserProvider };

@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { checkAndSetUserContext } from "../../user";
-import { userContext } from "../../state/userContext";
+import { UserContext } from "../../state/userContext";
 import { ChatMenu } from "../Application/ChatMenu";
 import { RoomsMenu } from "../Application/RoomsMenu";
 
@@ -64,8 +64,7 @@ export const Chat: React.FC<Props> = (props) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
 
-  const { userState, dispatch } = useContext(userContext);
-  const { user } = userState;
+  const { user, addUser } = useContext(UserContext);
 
   interface RouteParams {
     room: string;
@@ -81,7 +80,7 @@ export const Chat: React.FC<Props> = (props) => {
       .then((res) => setMessages((messages) => [...messages, ...res.data]))
       .catch((err) => console.log(err));
 
-    checkAndSetUserContext(user, dispatch);
+    checkAndSetUserContext(user, addUser);
     socket.emit("joinRoom", {
       user: user,
       room,
@@ -105,7 +104,7 @@ export const Chat: React.FC<Props> = (props) => {
       socket.disconnect();
       setSocketState(null);
     };
-  }, [dispatch, room, user]);
+  }, [addUser, room, user]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTextInput(e.target.value);
