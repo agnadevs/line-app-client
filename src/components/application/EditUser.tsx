@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import styled from "styled-components";
 import Cookies from "js-cookie";
-import { userContext } from "../../state/userContext";
+import { UserContext } from "../../state/userContext";
 import { InfoBox } from "../Application/InfoBox";
 
 const Container = styled.div`
@@ -67,7 +67,7 @@ export const EditUser: React.FC<Props> = ({
   const [saved, setSaved] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [disabled, setDisabled] = useState(true);
-  const { userState, dispatch } = useContext(userContext);
+  const { user, addUser } = useContext(UserContext);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const saveProfile = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -86,16 +86,13 @@ export const EditUser: React.FC<Props> = ({
     })
       .then((res) => res.json())
       .then((res) => {
-        const user = {
+        const updatedUser = {
           userName: res.data.userName,
-          userId: userState.user.userId,
+          userId: user.userId,
           profileImageURL: res.data.profileImageURL,
-          color: userState.user.color,
+          color: user.color,
         };
-        dispatch({
-          type: "SET_USER",
-          data: user,
-        });
+        addUser(updatedUser);
         Cookies.set("user", user, { expires: 7 });
         setSaved(true);
       })

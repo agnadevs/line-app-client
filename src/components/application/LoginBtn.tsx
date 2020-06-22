@@ -3,7 +3,7 @@ import { GoogleLogin, GoogleLogout } from "react-google-login";
 import Cookies from "js-cookie";
 import { useHistory } from "react-router";
 import { InfoBox } from "./InfoBox";
-import { authContext } from "../../state/authContext";
+import { AuthContext } from "../../state/authContext";
 
 const CLIENT_ID =
   "627288097347-5a68p3saa38s53fqmmllk8773odutoc2.apps.googleusercontent.com";
@@ -14,7 +14,7 @@ type Info = {
 };
 
 const LoginBtn: React.FC = () => {
-  const { authState, dispatch } = useContext(authContext);
+  const { isLoggedIn, isUserLoggedIn } = useContext(AuthContext);
   const [error, setError] = useState<Info>({ isError: false, text: "" });
 
   const history = useHistory();
@@ -36,7 +36,7 @@ const LoginBtn: React.FC = () => {
           });
         }
         Cookies.set("user", res.data, { expires: 7 });
-        dispatch({ type: "SET_AUTH", data: true });
+        isUserLoggedIn(true);
         history.push("/lounge");
       })
       .catch((err) =>
@@ -45,8 +45,8 @@ const LoginBtn: React.FC = () => {
   };
 
   const logout = () => {
-    dispatch({ type: "SET_AUTH", data: false });
     Cookies.remove("user");
+    isUserLoggedIn(false);
     history.push("/");
   };
 
@@ -60,7 +60,7 @@ const LoginBtn: React.FC = () => {
 
   return (
     <div>
-      {authState.isLoggedIn ? (
+      {isLoggedIn ? (
         <GoogleLogout
           clientId={CLIENT_ID}
           buttonText="Sign out"

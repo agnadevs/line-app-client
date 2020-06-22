@@ -8,19 +8,16 @@ const colors: string[] = [
   "#daf7dc",
 ];
 
-const checkAndSetUserContext = (user: any, dispatch: any) => {
+const checkAndSetUserContext = (user: any, cb: any) => {
   const userCookie = Cookies.get("user");
   if (!user.userName) {
     if (userCookie) {
       const parsedUser = JSON.parse(userCookie);
-      dispatch({
-        type: "SET_USER",
-        data: {
-          userName: parsedUser.userName,
-          userId: parsedUser.userId,
-          profileImageURL: parsedUser.profileImageURL,
-          color: colors[Math.floor(Math.random() * colors.length)],
-        },
+      cb({
+        userName: parsedUser.userName,
+        userId: parsedUser.userId,
+        profileImageURL: parsedUser.profileImageURL,
+        color: colors[Math.floor(Math.random() * colors.length)],
       });
     } else {
       window.location.href = "/";

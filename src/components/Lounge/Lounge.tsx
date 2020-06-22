@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { RoomCard } from "./RoomCard";
 import styled from "styled-components";
 import { checkAndSetUserContext } from "../../user";
-import { userContext } from "../../state/userContext";
-import { roomsContext } from "../../state/roomsContext";
+import { UserContext } from "../../state/userContext";
+import { RoomsContext } from "../../state/roomsContext";
 import { Room } from "../../types";
 import { PageHeader } from "../Application/PageHeader";
 import { Modal } from "../Application/Modal";
@@ -20,17 +20,14 @@ const MenuWrapper = styled.div`
 
 export default () => {
   const [openModal, setOpenModal] = useState(false);
-  const { userState, dispatch } = useContext(userContext);
-  const { roomsState } = useContext(roomsContext);
+  const { user, addUser } = useContext(UserContext);
+  const { rooms } = useContext(RoomsContext);
 
   useEffect(() => {
-    checkAndSetUserContext(userState.user, dispatch);
-  }, [userState.user, dispatch]);
+    checkAndSetUserContext(user, addUser);
+  }, [user, addUser]);
 
-  if (!roomsState.rooms || !userState.user) return null;
-
-  const { user } = userState;
-  const { rooms } = roomsState;
+  if (!rooms || !user.userName) return null;
 
   return (
     <>
