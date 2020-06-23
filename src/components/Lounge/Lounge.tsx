@@ -124,7 +124,7 @@ export default () => {
           })}
       </MenuWrapper>
       <PrivateContainer>
-        <SectionTitle private>PRIVATE ROOMS</SectionTitle>
+        <SectionTitle private>YOUR ROOMS</SectionTitle>
         <MenuWrapper>
           {!!privateRooms.length ? (
             privateRooms.map((room: Room, index) => {

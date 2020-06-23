@@ -10,6 +10,7 @@ import { checkAndSetUserContext } from "../../user";
 import { UserContext } from "../../state/userContext";
 import { ChatMenu } from "../Application/ChatMenu";
 import { RoomsMenu } from "../Application/RoomsMenu";
+import { InviteUser } from "../Application/Modals/InviteUser";
 
 interface MatchParams {
   name: string;
@@ -63,6 +64,7 @@ export const Chat: React.FC<Props> = (props) => {
   const [textInput, setTextInput] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
+  const [openInvite, setOpenInvite] = useState<boolean>(false);
 
   const { user, addUser } = useContext(UserContext);
 
@@ -123,10 +125,17 @@ export const Chat: React.FC<Props> = (props) => {
     setTextInput("");
   };
 
+  const inviteUserModalProps = {
+    open: openInvite,
+    modalName: "Invite a user to the room",
+    closeModalCallback: () => setOpenInvite(false),
+  };
+  
   return (
     <>
+      {openInvite && <InviteUser modal={inviteUserModalProps} />}
       <ChatMenu users={usersInRoom} />
-      <RoomsMenu />
+      <RoomsMenu openInviteUserCallback={() => setOpenInvite(true)} />
       <ChatContainer>
         <DisplayMessagesContainer>
           <MessagesList userId={user.userId} messages={messages} />

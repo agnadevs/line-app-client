@@ -73,8 +73,10 @@ export const Modal: React.FC<Props> = (props) => {
 
   useEffect(() => {
     document.addEventListener("click", handleClick);
+    console.log("add event listener");
 
     return () => {
+      console.log("remove event listener");
       document.removeEventListener("click", handleClick);
     };
   });
