@@ -1,12 +1,11 @@
-import React, { useState, useContext, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { RoomsContext } from "../../../state/roomsContext";
-import { UserContext } from "../../../state/userContext";
 import { Modal } from "./Modal";
 import { InfoBox } from "../InfoBox";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import { User } from "../../../types";
+import { useParams } from "react-router-dom";
 
 const Ul = styled.ul`
   border: 2px solid black;
@@ -27,14 +26,20 @@ type Props = {
 //   isError: boolean;
 // };
 
+type RouteParams = {
+  roomId: string;
+};
+
 export const InviteUser: React.FC<Props> = ({ modal }) => {
   const { open, modalName, closeModalCallback } = modal;
+
+  const { roomId } = useParams<RouteParams>();
 
   const [usersWithoutAccess, setUsersWithoutAccess] = useState<User[]>([]);
   const [usersWithAccess, setUsersWithAccess] = useState<User[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/rooms/12/users`)
+    fetch(`http://localhost:4000/api/rooms/${roomId}/users`)
       .then((res) => res.json())
       .then((res) => {
         setUsersWithoutAccess(res.data.usersWithoutAccess);

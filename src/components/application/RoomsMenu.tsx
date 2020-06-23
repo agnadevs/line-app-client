@@ -86,7 +86,7 @@ type Props = {
 export const RoomsMenu: React.FC<Props> = ({ openInviteUserCallback }) => {
   const { rooms } = useContext(RoomsContext);
 
-  interface RouteParams {
+  type RouteParams = {
     roomId: string;
   }
   const params = useParams<RouteParams>();
