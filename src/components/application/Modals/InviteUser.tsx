@@ -30,27 +30,30 @@ type Props = {
 export const InviteUser: React.FC<Props> = ({ modal }) => {
   const { open, modalName, closeModalCallback } = modal;
 
-  const [users, setUsers] = useState<User[]>([]);
+  const [usersWithoutAccess, setUsersWithoutAccess] = useState<User[]>([]);
   const [usersWithAccess, setUsersWithAccess] = useState<User[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/users")
+    fetch(`http://localhost:4000/api/rooms/12/users`)
       .then((res) => res.json())
-      .then((res) => setUsers(res.data));
+      .then((res) => {
+        setUsersWithoutAccess(res.data.usersWithoutAccess);
+        setUsersWithAccess(res.data.usersWithAccess);
+      });
   }, []);
 
-  const removeFromUsers = async (selectedUser: User) => {
+  const removeFromUsersWithoutAccess = async (selectedUser: User) => {
     return new Promise((resolve, reject) => {
-      const filteredUsers = users.filter((user: User) => {
+      const filteredUsers = usersWithoutAccess.filter((user: User) => {
         return user.userId !== selectedUser.userId;
       });
-      setUsers(filteredUsers);
-      resolve(users);
+      setUsersWithoutAccess(filteredUsers);
+      resolve(usersWithoutAccess);
     });
   };
-  const addUser = async (selectedUser: User) => {
-    await removeFromUsers(selectedUser);
-    setUsersWithAccess((users) => [...users, selectedUser]);
+  const addToUsersWithAccess = async (selectedUser: User) => {
+    await removeFromUsersWithoutAccess(selectedUser);
+    setUsersWithAccess((usersWithAccess) => [...usersWithAccess, selectedUser]);
   };
 
   return (
@@ -68,11 +71,14 @@ export const InviteUser: React.FC<Props> = ({ modal }) => {
           </Ul>
         )}
 
-        {!!users.length && (
+        {!!usersWithoutAccess.length && (
           <Ul>
-            {users.map((user: User) => {
+            {usersWithoutAccess.map((user: User) => {
               return (
-                <li onClick={() => addUser(user)} key={user.userId}>
+                <li
+                  onClick={() => addToUsersWithAccess(user)}
+                  key={user.userId}
+                >
                   {user.userName}
                 </li>
               );
