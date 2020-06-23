@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import styled from "styled-components";
 import Cookies from "js-cookie";
-import { UserContext } from "../../state/userContext";
-import { InfoBox } from "../Application/InfoBox";
+import { UserContext } from "../../../state/userContext";
+import { InfoBox } from "../InfoBox";
+import { Modal } from "./Modal";
+import { Button } from "../Button";
+import { Input } from "../Input";
 
 const Container = styled.div`
   display: flex;
@@ -25,49 +28,24 @@ const Label = styled.span`
   letter-spacing: 2px;
   margin: 5px auto;
 `;
-const Input = styled.input`
-  width: 300px;
-  height: 30px;
-  padding: 10px;
-  margin: 10px auto;
-  text-align: center;
-`;
-const Button = styled.button`
-  width: 300px;
-  height: 40px;
-  padding: 10px;
-  margin: 10px auto;
-  color: ${(props) => (props.disabled ? "#F5F5F4" : "#33cc00")};
-  background-color: ${(props) => (props.disabled ? "#CFCCC9" : "#caffb9")};
-  border: none;
-  border-radius: 3px;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  z-index: 1;
-  :hover {
-    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-    color: ${(props) => (props.disabled ? "#F5F5F4" : "#33cc00")};
-    background-color: ${(props) => (props.disabled ? "#CFCCC9" : "#caffb9")};
-  }
-`;
 
 type Props = {
-  userName: string;
-  userId: string;
-  profileImageURL: string;
+  modal: {
+    open: boolean;
+    modalName: string;
+    closeModalCallback: () => void;
+  };
 };
 
-export const EditUser: React.FC<Props> = ({
-  userName,
-  userId,
-  profileImageURL,
-}) => {
+export const EditUser: React.FC<Props> = ({ modal }) => {
+  const { user, addUser } = useContext(UserContext);
+  const { userName, userId, profileImageURL } = user;
+  const { open, modalName, closeModalCallback } = modal;
+
   const [name, setName] = useState<string>(userName);
   const [saved, setSaved] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [disabled, setDisabled] = useState(true);
-  const { user, addUser } = useContext(UserContext);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const saveProfile = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -93,7 +71,7 @@ export const EditUser: React.FC<Props> = ({
           color: user.color,
         };
         addUser(updatedUser);
-        Cookies.set("user", user, { expires: 7 });
+        Cookies.set("user", updatedUser, { expires: 7 });
         setSaved(true);
       })
       .catch((err) => {
@@ -116,27 +94,29 @@ export const EditUser: React.FC<Props> = ({
   }, []);
 
   return (
-    <Container>
-      <Image src={profileImageURL} alt="profileImage"></Image>
-      <Form onSubmit={saveProfile}>
-        <Label>Username:</Label>
-        <Input ref={inputRef} value={name} onChange={handleChange} />
-        {/* <Label>First name:</Label>
-        <Input value="First name" />
-        <Label>Last name:</Label>
-        <Input value="Last name" /> */}
-        <Button disabled={disabled}>Save</Button>
-        {saved || error ? (
-          <InfoBox
-            text={
-              saved
-                ? "Your changes have been saved!"
-                : "Something went wrong, try again!"
-            }
-            isError={saved ? false : true}
-          />
-        ) : null}
-      </Form>
-    </Container>
+    <Modal
+      open={open}
+      modalName={modalName}
+      closeModalCallback={closeModalCallback}
+    >
+      <Container>
+        <Image src={profileImageURL} alt="profileImage"></Image>
+        <Form onSubmit={saveProfile}>
+          <Label>Username:</Label>
+          <Input ref={inputRef} value={name} onChange={handleChange} />
+          <Button disabled={disabled} title="Save" />
+          {saved || error ? (
+            <InfoBox
+              text={
+                saved
+                  ? "Your changes have been saved!"
+                  : "Something went wrong, try again!"
+              }
+              isError={saved ? false : true}
+            />
+          ) : null}
+        </Form>
+      </Container>
+    </Modal>
   );
 };

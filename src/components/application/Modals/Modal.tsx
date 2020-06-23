@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
+import { Button } from "../Button";
 
 const StyledModal = styled.div<Props>`
   display: ${(props) => (props.open ? "block" : "none")};
@@ -36,24 +37,24 @@ const Title = styled.div`
   }
 `;
 
-const Button = styled.button`
-  width: 300px;
-  height: 40px;
-  padding: 10px;
-  margin: 10px auto;
-  background-color: #a8ccc9;
-  border: none;
-  border-radius: 3px;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: #3c6763;
-  :hover {
-    cursor: pointer;
-    color: #a8ccc9;
-    background-color: #3c6763;
-  }
-`;
+// const Button = styled.button`
+//   width: 300px;
+//   height: 40px;
+//   padding: 10px;
+//   margin: 10px auto;
+//   background-color: #a8ccc9;
+//   border: none;
+//   border-radius: 3px;
+//   font-size: 14px;
+//   text-transform: uppercase;
+//   letter-spacing: 3px;
+//   color: #3c6763;
+//   :hover {
+//     cursor: pointer;
+//     color: #a8ccc9;
+//     background-color: #3c6763;
+//   }
+// `;
 
 type Props = {
   open: boolean;
@@ -85,7 +86,11 @@ export const Modal: React.FC<Props> = (props) => {
           <h1>{props.modalName}</h1>
         </Title>
         {props.children}
-        <Button onClick={() => props.closeModalCallback()}>Close</Button>
+        <Button
+          title="Close"
+          standardBtn
+          onClick={() => props.closeModalCallback()}
+        />
       </Content>
     </StyledModal>
   );
