@@ -42,7 +42,7 @@ export const CreateRoom: React.FC<Props> = ({ modal }) => {
     if (roomName === "") {
       console.log("Please enter a room name");
     }
-    fetch("http://localhost:4000/api/rooms/private", {
+    fetch("http://localhost:4000/api/rooms", {
       method: "POST",
       body: JSON.stringify({ userId: user.userId, roomName }),
       headers: {

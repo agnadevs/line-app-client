@@ -5,16 +5,6 @@ import { Room } from "../../types";
 import { RoomsContext } from "../../state/roomsContext";
 import { ReactComponent as BackIcon } from "../../assets/back-caret.svg";
 
-const isPrivateRoom = (roomsArr: Room[], roomIsFromParams: number) => {
-  const currentRoom = roomsArr.find(
-    (room: Room) => roomIsFromParams === room.roomId
-  );
-
-  if (!currentRoom) return false;
-
-  return currentRoom.isPrivate;
-};
-
 const MenuWrapper = styled.div`
   top: 0;
   font-weight: 100;
@@ -80,20 +70,17 @@ const StyledLink = styled(Link)`
 
 type Props = {
   highlight?: boolean;
-  openInviteUserCallback?: () => void;
 };
 
-export const RoomsMenu: React.FC<Props> = ({ openInviteUserCallback }) => {
+export const RoomsMenu: React.FC<Props> = () => {
   const { rooms } = useContext(RoomsContext);
 
   type RouteParams = {
     roomId: string;
-  }
+  };
   const params = useParams<RouteParams>();
 
   if (rooms.length === 0) return null;
-
-  const isCurrentRoomPrivate = isPrivateRoom(rooms, Number(params.roomId));
 
   return (
     <MenuWrapper>
@@ -111,11 +98,6 @@ export const RoomsMenu: React.FC<Props> = ({ openInviteUserCallback }) => {
         })}
         <hr />
         &nbsp;
-        {isCurrentRoomPrivate && (
-          <ListItem onClick={openInviteUserCallback} highlight={true}>
-            Invite users
-          </ListItem>
-        )}
         <ListItem highlight={true}>
           <StyledLink to="/">
             <BackIcon style={{ marginRight: "5px" }} />

@@ -8,6 +8,7 @@ import { Room } from "../../types";
 import { PageHeader } from "../Application/PageHeader";
 import { EditUser } from "../Application/Modals/EditUser";
 import { CreateRoom } from "../Application/Modals/CreateRoom";
+import { PrivateRoomSettings } from "../Application/Modals/PrivateRoomSettings";
 import { Button } from "../Application/Button";
 
 const MenuWrapper = styled.div`
@@ -20,11 +21,11 @@ const MenuWrapper = styled.div`
 `;
 
 const PrivateContainer = styled.div`
-  background-color: #fafded;
+  background-color: #a8ccc9;
   width: 90%;
   margin: 0 auto;
   border-radius: 4px;
-  opacity: 0.7;
+  /* opacity: 0.7; */
 `;
 
 const InfoContainer = styled.div`
@@ -65,10 +66,18 @@ type Props = {
   private?: boolean;
 };
 
+type PrivateRoomDetails = {
+  roomId: number | null;
+  title: string;
+};
+
 export default () => {
   const [openEditUser, setOpenEditUser] = useState(false);
   const [openCreateRoom, setOpenCreateRoom] = useState(false);
-  const [openRequestRoomAccess, setOpenRequestRoomAccess] = useState(false);
+  const [openPrivateRoomSettings, setOpenPrivateRoomSettings] = useState(false);
+  const [privateRoomSettingsTarget, setPrivateRoomSettingsTarget] = useState<
+    PrivateRoomDetails
+  >({ roomId: null, title: "" });
   const { user, addUser } = useContext(UserContext);
   const { rooms, setInitialRooms } = useContext(RoomsContext);
 
@@ -105,10 +114,23 @@ export default () => {
     modalName: "CREATE PRIVATE ROOM",
     closeModalCallback: () => setOpenCreateRoom(false),
   };
+
+  const privateRoomSettingsModalProps = {
+    open: openPrivateRoomSettings,
+    modalName: "PRIVATE ROOM SETTINGS",
+    closeModalCallback: () => setOpenPrivateRoomSettings(false),
+  };
+
   return (
     <>
       {openEditUser && <EditUser modal={editUserModalProps} />}
       {openCreateRoom && <CreateRoom modal={createRoomModalProps} />}
+      {openPrivateRoomSettings && (
+        <PrivateRoomSettings
+          roomDetails={privateRoomSettingsTarget}
+          modal={privateRoomSettingsModalProps}
+        />
+      )}
       <PageHeader
         userName={user.userName}
         profileImageURL={user.profileImageURL}
@@ -129,7 +151,19 @@ export default () => {
           {!!privateRooms.length ? (
             privateRooms.map((room: Room, index) => {
               return (
-                <RoomCard key={index} title={room.title} roomId={room.roomId} />
+                <RoomCard
+                  key={index}
+                  title={room.title}
+                  roomId={room.roomId}
+                  isPrivate
+                  openPrivateRoomSettingsCallback={(roomId, title) => {
+                    setPrivateRoomSettingsTarget({
+                      roomId: roomId,
+                      title: title,
+                    });
+                    setOpenPrivateRoomSettings(true);
+                  }}
+                />
               );
             })
           ) : (
@@ -152,11 +186,11 @@ export default () => {
           onClick={() => setOpenCreateRoom(true)}
           standardBtn
         />
-        <StyledButton
+        {/* <StyledButton
           title="Request Access"
           onClick={() => setOpenRequestRoomAccess(true)}
           standardBtn
-        />
+        /> */}
       </ButtonContainer>
     </>
   );
