@@ -27,7 +27,7 @@ type Info = {
 
 export const CreateRoom: React.FC<Props> = ({ modal }) => {
   const { open, modalName, closeModalCallback } = modal;
-  const { rooms, addNewRoom } = useContext(RoomsContext);
+  const { addNewRoom } = useContext(RoomsContext);
   const { user } = useContext(UserContext);
   const [roomName, setRoomName] = useState<string>("");
   const [saved, setSaved] = useState<boolean>(false);

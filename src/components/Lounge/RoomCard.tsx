@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { InviteUser } from "../Application/InviteUser";
+import { UserContext } from "../../state/userContext";
 
 const StyledLink = styled(Link)`
   text-decoration: none;
@@ -55,6 +56,7 @@ const Icon = styled.i`
 type Props = {
   title: string;
   roomId: number;
+  adminId?: number;
   isPrivate?: boolean;
   openPrivateRoomSettingsCallback?: (roomId: number, title: string) => void;
 };
@@ -62,12 +64,17 @@ type Props = {
 export const RoomCard: React.FC<Props> = ({
   title,
   roomId,
+  adminId,
   isPrivate,
   openPrivateRoomSettingsCallback,
 }) => {
+  const { user } = useContext(UserContext);
+  console.log(adminId);
+  console.log(user.userId);
+  const isAdmin = adminId === parseInt(user.userId);
   return (
     <Wrapper>
-      {isPrivate ? (
+      {isAdmin ? (
         <Icon
           onClick={() =>
             openPrivateRoomSettingsCallback &&

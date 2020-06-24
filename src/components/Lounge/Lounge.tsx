@@ -155,6 +155,7 @@ export default () => {
                   key={index}
                   title={room.title}
                   roomId={room.roomId}
+                  adminId={room.adminId}
                   isPrivate
                   openPrivateRoomSettingsCallback={(roomId, title) => {
                     setPrivateRoomSettingsTarget({

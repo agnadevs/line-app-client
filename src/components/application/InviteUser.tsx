@@ -14,6 +14,9 @@ const Ul = styled.ul`
   line-height: 40px;
   li {
     position: relative;
+    :hover {
+      cursor: pointer;
+    }
   }
 `;
 
@@ -65,40 +68,34 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
       });
   }, []);
 
-  // const removeFromUsersWithoutAccess = async (selectedUser: User) => {
-  //   return new Promise((resolve, reject) => {
-  //     const filteredUsers = usersWithoutAccess.filter((user: User) => {
-  //       return user.userId !== selectedUser.userId;
-  //     });
-  //     setUsersWithoutAccess(filteredUsers);
-  //     resolve(usersWithoutAccess);
-  //   });
-  // };
-
-  const addToUsersWithAccess = async (selectedUser: User) => {
-    // await removeFromUsersWithoutAccess(selectedUser);
-    fetch(
-      `http://localhost:4000/api/rooms/${roomId}/users/${selectedUser.userId}`,
-      {
-        method: "POST",
-        body: null,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
+  const addToUsersWithAccess = async (userId: string) => {
+    fetch(`http://localhost:4000/api/rooms/${roomId}/users/${userId}`, {
+      method: "POST",
+      body: JSON.stringify({}),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.data);
-        // setUsersWithoutAccess(res.data.usersWithoutAccess);
-        // setUsersWithAccess(res.data.usersWithAccess);
+        setUsersWithoutAccess(res.data.usersWithoutAccess);
+        setUsersWithAccess(res.data.usersWithAccess);
       });
-
-    setUsersWithAccess((usersWithAccess) => [...usersWithAccess, selectedUser]);
   };
 
-  const removeFromUsersWithAccess = async (selectedUser: User) => {
-    console.log(selectedUser);
+  const removeFromUsersWithAccess = async (userId: string) => {
+    fetch(`http://localhost:4000/api/rooms/${roomId}/users/${userId}`, {
+      method: "DELETE",
+      body: JSON.stringify({}),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setUsersWithoutAccess(res.data.usersWithoutAccess);
+        setUsersWithAccess(res.data.usersWithAccess);
+      });
   };
 
   return (
@@ -113,7 +110,7 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
               return (
                 <li
                   key={user.userId}
-                  onClick={() => removeFromUsersWithAccess(user)}
+                  onClick={() => removeFromUsersWithAccess(user.userId)}
                 >
                   {user.userName}
                   <Icon className="fas fa-minus fa-sm"></Icon>
@@ -128,7 +125,7 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
             {usersWithoutAccess.map((user: User) => {
               return (
                 <li
-                  onClick={() => addToUsersWithAccess(user)}
+                  onClick={() => addToUsersWithAccess(user.userId)}
                   key={user.userId}
                 >
                   {user.userName}

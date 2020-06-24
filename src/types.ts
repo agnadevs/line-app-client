@@ -19,6 +19,6 @@ type Data = {
 export type Room = {
   roomId: number;
   title: string;
-  infoText?: string;
   isPrivate: boolean;
+  adminId: number; 
 };
