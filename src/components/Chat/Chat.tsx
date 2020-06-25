@@ -2,12 +2,13 @@ import React, { useEffect, useState, useContext } from "react";
 import io from "socket.io-client";
 import { ChatInput } from "./ChatInput";
 import { MessagesList } from "./MessagesList";
-import { ChatMessage, User } from "../../types";
+import { ChatMessage, User, Room } from "../../types";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
 import { checkAndSetUserContext } from "../../user";
 import { UserContext } from "../../state/userContext";
+import { RoomsContext } from "../../state/roomsContext";
 import { ChatMenu } from "../Application/ChatMenu";
 import { RoomsMenu } from "../Application/RoomsMenu";
 
@@ -65,11 +66,15 @@ export const Chat: React.FC<Props> = (props) => {
   const [usersInRoom, setUsersInRoom] = useState<User[]>([]);
 
   const { user, addUser } = useContext(UserContext);
+  const { rooms } = useContext(RoomsContext);
 
   interface RouteParams {
     roomId: string;
   }
   const { roomId } = useParams<RouteParams>();
+  const currentRoom = rooms.find(
+    (room: Room) => room.roomId === parseInt(roomId)
+  );
 
   useEffect(() => {
     const socket = io.connect("localhost:4000");
@@ -125,7 +130,7 @@ export const Chat: React.FC<Props> = (props) => {
 
   return (
     <>
-      <ChatMenu users={usersInRoom} />
+      <ChatMenu currentRoom={currentRoom!} users={usersInRoom} />
       <RoomsMenu />
       <ChatContainer>
         <DisplayMessagesContainer>

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { User } from "../../types";
+import { User, Room } from "../../types";
+import { ChatMenuUserList } from "./ChatMenuUserList";
 
 const MenuWrapper = styled.div`
   top: 0;
@@ -36,33 +37,39 @@ const Title = styled.div`
   font-weight: 800;
   font-size: 15px;
 `;
-const UserList = styled.ul`
-  position: absolute;
-  top: 10%;
-  /* -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%); */
-  font-weight: 100;
-`;
+// const UserList = styled.ul`
+//   position: absolute;
+//   top: 10%;
+//   /* -webkit-transform: translateY(-50%);
+//   -ms-transform: translateY(-50%);
+//   transform: translateY(-50%); */
+//   font-weight: 100;
+// `;
 
-const ListItem = styled.li`
-  padding-bottom: 30px;
-  list-style-type: none;
-`;
+// const ListItem = styled.li`
+//   padding-bottom: 30px;
+//   list-style-type: none;
+// `;
 
 type Props = {
   users: User[];
+  currentRoom: Room;
 };
 
-export const ChatMenu: React.FC<Props> = ({ users }) => {
+export const ChatMenu: React.FC<Props> = ({ users, currentRoom }) => {
+  const isPrivateRoom = currentRoom.isPrivate;
+
   return (
     <MenuWrapper>
       <Title>USERS</Title>
-      <UserList>
-        {users.map((user: User, index) => {
-          return <ListItem key={index}>{user.userName}</ListItem>;
-        })}
-      </UserList>
+      {/* <UserList>
+        {isPrivateRoom
+          ? users.map((user: User, index) => {
+              return <ListItem key={index}>{user.userName}</ListItem>;
+            })
+          : null}
+      </UserList> */}
+      <ChatMenuUserList users={users} isPrivateRoom={isPrivateRoom} />
     </MenuWrapper>
   );
 };

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import { InfoBox } from "./InfoBox";
-import { Button } from "./Button";
-import { Input } from "./Input";
 import { User } from "../../types";
+import { UserContext } from "../../state/userContext";
 
 const Ul = styled.ul`
   background-color: #caffb9;
@@ -59,6 +57,8 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
   const [usersWithoutAccess, setUsersWithoutAccess] = useState<User[]>([]);
   const [usersWithAccess, setUsersWithAccess] = useState<User[]>([]);
 
+  const { user } = useContext(UserContext);
+
   useEffect(() => {
     fetch(`http://localhost:4000/api/rooms/${roomId}/users`)
       .then((res) => res.json())
@@ -66,7 +66,7 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
         setUsersWithoutAccess(res.data.usersWithoutAccess);
         setUsersWithAccess(res.data.usersWithAccess);
       });
-  }, []);
+  }, [roomId]);
 
   const addToUsersWithAccess = async (userId: string) => {
     fetch(`http://localhost:4000/api/rooms/${roomId}/users/${userId}`, {
@@ -84,6 +84,9 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
   };
 
   const removeFromUsersWithAccess = async (userId: string) => {
+    if (userId === user.userId) {
+      return;
+    }
     fetch(`http://localhost:4000/api/rooms/${roomId}/users/${userId}`, {
       method: "DELETE",
       body: JSON.stringify({}),
@@ -106,14 +109,17 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
         <Subheader>Users without access</Subheader>
         {!!usersWithAccess.length && (
           <Ul>
-            {usersWithAccess.map((user: User) => {
+            {usersWithAccess.map((u: User) => {
+              const name =
+                user.userId === u.userId
+                  ? `${u.userName} ( admin ) `
+                  : u.userName;
               return (
                 <li
-                  key={user.userId}
-                  onClick={() => removeFromUsersWithAccess(user.userId)}
+                  key={u.userId}
+                  onClick={() => removeFromUsersWithAccess(u.userId)}
                 >
-                  {user.userName}
-                  <Icon className="fas fa-minus fa-sm"></Icon>
+                  {name} <Icon className="fas fa-minus fa-sm"></Icon>
                 </li>
               );
             })}

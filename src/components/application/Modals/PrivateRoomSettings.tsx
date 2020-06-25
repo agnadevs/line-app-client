@@ -6,6 +6,8 @@ import { Input } from "../Input";
 import { Button } from "../Button";
 import { InfoBox } from "../InfoBox";
 import { RoomsContext } from "../../../state/roomsContext";
+import { UserContext } from "../../../state/userContext";
+import { LeaveRoom } from "../LeaveRoom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -40,7 +42,12 @@ export const PrivateRoomSettings: React.FC<Props> = ({
   const [saved, setSaved] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [disabled, setDisabled] = useState(true);
-  const { updateRoom } = useContext(RoomsContext);
+  const { updateRoom, getRoomById } = useContext(RoomsContext);
+  const { user } = useContext(UserContext);
+
+  const currentRoom = getRoomById(roomDetails.roomId!);
+
+  if (!currentRoom) return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setSaved(false);
@@ -70,6 +77,9 @@ export const PrivateRoomSettings: React.FC<Props> = ({
         setError(true);
       });
   };
+
+  const isAdmin = currentRoom.adminId === parseInt(user.userId);
+
   return (
     <Modal
       open={open}
@@ -77,21 +87,30 @@ export const PrivateRoomSettings: React.FC<Props> = ({
       closeModalCallback={closeModalCallback}
     >
       <Wrapper>
-        <RoomDetailsForm onSubmit={saveRoomDetails}>
-          <Input value={roomName} onChange={handleChange} />
-          <Button disabled={disabled} title="Save" />
-          {saved || error ? (
-            <InfoBox
-              text={
-                saved
-                  ? "Your changes have been saved!"
-                  : "Something went wrong, try again!"
-              }
-              isError={saved ? false : true}
-            />
-          ) : null}
-        </RoomDetailsForm>
-        <InviteUser roomId={roomDetails.roomId} />
+        {isAdmin ? (
+          <>
+            <RoomDetailsForm onSubmit={saveRoomDetails}>
+              <Input value={roomName} onChange={handleChange} />
+              <Button disabled={disabled} title="Save" />
+              {saved || error ? (
+                <InfoBox
+                  text={
+                    saved
+                      ? "Your changes have been saved!"
+                      : "Something went wrong, try again!"
+                  }
+                  isError={saved ? false : true}
+                />
+              ) : null}
+            </RoomDetailsForm>
+            <InviteUser roomId={roomDetails.roomId} />
+          </>
+        ) : (
+          <LeaveRoom
+            roomId={roomDetails.roomId}
+            closeModalCb={closeModalCallback}
+          />
+        )}
       </Wrapper>
     </Modal>
   );

@@ -6,6 +6,7 @@ type ContextProps = {
   setInitialRooms: (rooms: Room[]) => void;
   addNewRoom: (room: Room) => void;
   updateRoom: (updatedRoom: Room) => void;
+  getRoomById: (id: number) => Room | undefined;
 };
 
 const RoomsContext = createContext({} as ContextProps);
@@ -34,9 +35,13 @@ const RoomsProvider: React.FC = ({ children }) => {
 
     setRooms(allRooms);
   };
+
+  const getRoomById = (id: number) => {
+    return rooms.find((room: Room) => room.roomId === id);
+  };
   return (
     <RoomsContext.Provider
-      value={{ rooms, setInitialRooms, addNewRoom, updateRoom }}
+      value={{ rooms, setInitialRooms, addNewRoom, updateRoom, getRoomById }}
     >
       {children}
     </RoomsContext.Provider>
