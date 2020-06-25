@@ -16,7 +16,7 @@ const MenuWrapper = styled.div`
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: 20px auto;
+  margin: 0px auto;
   padding: 20px;
 `;
 
@@ -24,8 +24,8 @@ const PrivateContainer = styled.div`
   background-color: #a8ccc9;
   width: 90%;
   margin: 0 auto;
+  margin-bottom: 20px;
   border-radius: 4px;
-  /* opacity: 0.7; */
 `;
 
 const InfoContainer = styled.div`
@@ -56,10 +56,12 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  padding-bottom: 50px;
 `;
+
 const StyledButton = styled(Button)`
-  margin: 20px;
+  margin: 20px 20px 0px 20px;
+  background-color: #fafded;
+  z-index: 0;
 `;
 
 type Props = {
@@ -147,6 +149,14 @@ export default () => {
       </MenuWrapper>
       <PrivateContainer>
         <SectionTitle private>YOUR ROOMS</SectionTitle>
+        <ButtonContainer>
+          <StyledButton
+            title="Create Room"
+            disabled={false}
+            onClick={() => setOpenCreateRoom(true)}
+            standardBtn
+          />
+        </ButtonContainer>
         <MenuWrapper>
           {!!privateRooms.length ? (
             privateRooms.map((room: Room, index) => {
@@ -180,19 +190,6 @@ export default () => {
           )}
         </MenuWrapper>
       </PrivateContainer>
-      <ButtonContainer>
-        <StyledButton
-          title="Create Room"
-          disabled={false}
-          onClick={() => setOpenCreateRoom(true)}
-          standardBtn
-        />
-        {/* <StyledButton
-          title="Request Access"
-          onClick={() => setOpenRequestRoomAccess(true)}
-          standardBtn
-        /> */}
-      </ButtonContainer>
     </>
   );
 };

@@ -19,8 +19,9 @@ const Box = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 500px;
-  height: 250px;
+  justify-content: center;
+  width: 250px;
+  height: 125px;
   border-radius: 5px;
   background-color: #fafded;
   margin: 10px;
@@ -28,12 +29,12 @@ const Box = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 50px;
+  font-size: 2rem;
   letter-spacing: 2px;
   font-weight: bold;
   font-family: "IBM Plex Mono", monospace;
   color: #0e0f19;
-  margin-top: 100px;
+  text-align: center;
 `;
 
 const Wrapper = styled.div`
@@ -42,8 +43,8 @@ const Wrapper = styled.div`
 
 const Icon = styled.i`
   position: absolute;
-  right: 15px;
-  top: 20px;
+  right: 10px;
+  top: 10px;
   color: black;
   padding: 10px;
   :hover {
@@ -81,7 +82,7 @@ export const RoomCard: React.FC<Props> = ({
             openPrivateRoomSettingsCallback &&
             openPrivateRoomSettingsCallback(roomId, title)
           }
-          className="fas fa-user-cog fa-lg"
+          className="fas fa-user-cog fa-md"
         ></Icon>
       ) : null}
       <StyledLink to={`/chat/${roomId}`}>

@@ -19,8 +19,7 @@ const PublicUser = styled.li`
 const PrivateUser = styled.li<IsActive>`
   padding-bottom: 30px;
   list-style-type: none;
-  color: ${(props) => (props.isActive ? "green" : "light-gray")};
-  opacity: ${(props) => (props.isActive ? "1" : "0.5")};
+  color: ${(props) => (props.isActive ? "#33cc00" : "lightgray")};
 `;
 
 type IsActive = {
@@ -51,7 +50,6 @@ export const ChatMenuUserList: React.FC<Props> = ({
   const [isFetching, setIsFetching] = useState<boolean>(false);
   useEffect(() => {
     if (isPrivateRoom) {
-      console.log("fetching users with access");
       setIsFetching(true);
       fetch(`http://localhost:4000/api/rooms/${roomId}/users`)
         .then((res) => res.json())
@@ -63,16 +61,19 @@ export const ChatMenuUserList: React.FC<Props> = ({
   }, [isPrivateRoom, roomId]);
 
   useEffect(() => {
-    const privateRoomUsers = usersWithAccess.map((user: User) => {
-      return {
-        ...user,
-        isActive: !!activeUsers.find(
-          (activeUser: User) => activeUser.userId === user.userId
-        ),
-      };
-    });
+    const privateRoomUsers = usersWithAccess
+      .map((user: User) => {
+        return {
+          ...user,
+          isActive: !!activeUsers.find(
+            (activeUser: User) => activeUser.userId === user.userId
+          ),
+        };
+      })
+      .sort((a, b) => (a.isActive ? -1 : 1));
+    console.log(privateRoomUsers);
     setPrivateUsersList(privateRoomUsers);
-  }, [activeUsers]);
+  }, [usersWithAccess, activeUsers]);
 
   if (isFetching) return null;
 

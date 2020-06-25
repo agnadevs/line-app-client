@@ -24,6 +24,9 @@ const MenuWrapper = styled.div`
   focus  {
     transform: translate3d(130px, 0, 0);
     animation-timing-function: 1s ease-in;
+    ul {
+      display: block;
+    }
   }
 `;
 
@@ -42,11 +45,13 @@ const Title = styled.div`
 const UserList = styled.ul`
   position: absolute;
   top: 50%;
-  left: 20%;
+  left: 10%;
   -webkit-transform: translateY(-50%);
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
   font-weight: 100;
+  width: 60%;
+  display: none;
 `;
 
 const ListItem = styled.li<Props>`

@@ -16,18 +16,18 @@ const Logo = styled.img`
 
 const RightContainer = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto;
+  grid-row-gap: 15px;
+  justify-items: start;
   position: absolute;
   top: 15%;
-  right: 2%;
+  left: 2%;
 `;
 
 const User = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-bottom: 50px;
-  padding-right: 20px;
   :hover {
     cursor: pointer;
   }
@@ -40,8 +40,8 @@ const Name = styled.span`
 `;
 
 const Image = styled.div<Props>`
-  height: 50px;
-  width: 50px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   background-color: #d5dcf9;
   background-image: ${(props) =>

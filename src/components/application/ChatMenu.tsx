@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { User, Room } from "../../types";
 import { ChatMenuUserList } from "./ChatMenuUserList";
@@ -37,19 +37,6 @@ const Title = styled.div`
   font-weight: 800;
   font-size: 15px;
 `;
-// const UserList = styled.ul`
-//   position: absolute;
-//   top: 10%;
-//   /* -webkit-transform: translateY(-50%);
-//   -ms-transform: translateY(-50%);
-//   transform: translateY(-50%); */
-//   font-weight: 100;
-// `;
-
-// const ListItem = styled.li`
-//   padding-bottom: 30px;
-//   list-style-type: none;
-// `;
 
 type Props = {
   activeUsers: User[];
@@ -61,13 +48,6 @@ export const ChatMenu: React.FC<Props> = ({ activeUsers, currentRoom }) => {
   return (
     <MenuWrapper>
       <Title>USERS</Title>
-      {/* <UserList>
-        {isPrivateRoom
-          ? users.map((user: User, index) => {
-              return <ListItem key={index}>{user.userName}</ListItem>;
-            })
-          : null}
-      </UserList> */}
       <ChatMenuUserList
         activeUsers={activeUsers}
         isPrivateRoom={isPrivateRoom}

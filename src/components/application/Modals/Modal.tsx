@@ -65,19 +65,19 @@ type Props = {
 export const Modal: React.FC<Props> = (props) => {
   const contentRef = useRef<HTMLDivElement | null>(null);
 
-  // const handleClick = (e: MouseEvent) => {
-  //   if (contentRef.current && !contentRef.current.contains(e.target as Node)) {
-  //     props.closeModalCallback();
-  //   }
-  // };
+  const handleClick = (e: MouseEvent) => {
+    if (contentRef.current && !contentRef.current.contains(e.target as Node)) {
+      props.closeModalCallback();
+    }
+  };
 
   useEffect(() => {
-    // document.addEventListener("click", handleClick);
-    // console.log("add event listener");
-    // return () => {
-    //   console.log("remove event listener");
-    //   document.removeEventListener("click", handleClick);
-    // };
+    document.body.style.overflow = "hidden";
+    document.addEventListener("click", handleClick);
+    return () => {
+      document.body.style.overflow = "unset";
+      document.removeEventListener("click", handleClick);
+    };
   });
 
   return (

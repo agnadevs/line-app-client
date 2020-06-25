@@ -20,10 +20,10 @@ interface Props extends RouteComponentProps<MatchParams> {}
 
 const ChatContainer = styled.div`
   width: 70%;
-  height: 100vh;
+  height: 95vh;
   display: grid;
   grid-template-rows: auto 60px;
-  margin: 20px auto;
+  margin: 0 auto;
   padding: 5px;
 `;
 
@@ -92,7 +92,7 @@ export const Chat: React.FC<Props> = (props) => {
     });
 
     socket.on("activeUsersInRoom", (activeUsers: User[]) => {
-      console.log('socket active users',activeUsers);
+      console.log("socket active users", activeUsers);
       setUsersInRoom(activeUsers);
     });
 
