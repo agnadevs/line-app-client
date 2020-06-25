@@ -92,6 +92,7 @@ export const Chat: React.FC<Props> = (props) => {
     });
 
     socket.on("activeUsersInRoom", (activeUsers: User[]) => {
+      console.log('socket active users',activeUsers);
       setUsersInRoom(activeUsers);
     });
 
@@ -130,7 +131,7 @@ export const Chat: React.FC<Props> = (props) => {
 
   return (
     <>
-      <ChatMenu currentRoom={currentRoom!} users={usersInRoom} />
+      <ChatMenu currentRoom={currentRoom!} activeUsers={usersInRoom} />
       <RoomsMenu />
       <ChatContainer>
         <DisplayMessagesContainer>

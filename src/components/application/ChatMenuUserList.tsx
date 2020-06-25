@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { User } from "../../types";
 
@@ -11,26 +11,84 @@ const UserList = styled.ul`
   font-weight: 100;
 `;
 
-const ListItem = styled.li`
+const PublicUser = styled.li`
   padding-bottom: 30px;
   list-style-type: none;
 `;
 
-type Props = {
-  users: User[];
-  isPrivateRoom: boolean;
+const PrivateUser = styled.li<IsActive>`
+  padding-bottom: 30px;
+  list-style-type: none;
+  color: ${(props) => (props.isActive ? "green" : "light-gray")};
+  opacity: ${(props) => (props.isActive ? "1" : "0.5")};
+`;
+
+type IsActive = {
+  isActive: boolean;
 };
 
-export const ChatMenuUserList: React.FC<Props> = ({ users, isPrivateRoom }) => {
-  const userList = isPrivateRoom ? users : users;
+type Props = {
+  activeUsers: User[];
+  isPrivateRoom: boolean;
+  roomId: number;
+};
+
+type MappedUser = {
+  userName: string;
+  userId: string;
+  createdAt: string;
+  socketId: string;
+  isActive: boolean;
+};
+
+export const ChatMenuUserList: React.FC<Props> = ({
+  activeUsers,
+  isPrivateRoom,
+  roomId,
+}) => {
+  const [usersWithAccess, setUsersWithAccess] = useState<User[]>([]);
+  const [privateUsersList, setPrivateUsersList] = useState<MappedUser[]>([]);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  useEffect(() => {
+    if (isPrivateRoom) {
+      console.log("fetching users with access");
+      setIsFetching(true);
+      fetch(`http://localhost:4000/api/rooms/${roomId}/users`)
+        .then((res) => res.json())
+        .then((res) => {
+          setUsersWithAccess(res.data.usersWithAccess);
+          setIsFetching(false);
+        });
+    }
+  }, [isPrivateRoom, roomId]);
+
+  useEffect(() => {
+    const privateRoomUsers = usersWithAccess.map((user: User) => {
+      return {
+        ...user,
+        isActive: !!activeUsers.find(
+          (activeUser: User) => activeUser.userId === user.userId
+        ),
+      };
+    });
+    setPrivateUsersList(privateRoomUsers);
+  }, [activeUsers]);
+
+  if (isFetching) return null;
 
   return (
     <UserList>
-      {isPrivateRoom
-        ? userList.map((user: User, index) => {
-            return <ListItem key={index}>{user.userName}</ListItem>;
+      {!isPrivateRoom
+        ? activeUsers.map((user: User) => {
+            return <PublicUser key={user.userId}>{user.userName}</PublicUser>;
           })
-        : null}
+        : privateUsersList.map((user: MappedUser) => {
+            return (
+              <PrivateUser key={user.userId} isActive={user.isActive}>
+                {user.userName}
+              </PrivateUser>
+            );
+          })}
     </UserList>
   );
 };

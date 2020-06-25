@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { User, Room } from "../../types";
 import { ChatMenuUserList } from "./ChatMenuUserList";
@@ -52,13 +52,12 @@ const Title = styled.div`
 // `;
 
 type Props = {
-  users: User[];
+  activeUsers: User[];
   currentRoom: Room;
 };
 
-export const ChatMenu: React.FC<Props> = ({ users, currentRoom }) => {
+export const ChatMenu: React.FC<Props> = ({ activeUsers, currentRoom }) => {
   const isPrivateRoom = currentRoom.isPrivate;
-
   return (
     <MenuWrapper>
       <Title>USERS</Title>
@@ -69,7 +68,11 @@ export const ChatMenu: React.FC<Props> = ({ users, currentRoom }) => {
             })
           : null}
       </UserList> */}
-      <ChatMenuUserList users={users} isPrivateRoom={isPrivateRoom} />
+      <ChatMenuUserList
+        activeUsers={activeUsers}
+        isPrivateRoom={isPrivateRoom}
+        roomId={currentRoom.roomId}
+      />
     </MenuWrapper>
   );
 };
