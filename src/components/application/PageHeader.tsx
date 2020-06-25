@@ -4,21 +4,22 @@ import LoginBtn from "./LoginBtn";
 
 const Container = styled.div`
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: 10px;
-  height: auto;
-  margin: 0 auto;
-  background-color: #fafded;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 30px;
 `;
 
 const Logo = styled.img`
   width: 25%;
+  margin-top: 20px;
 `;
 
 const RightContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: absolute;
+  top: 15%;
+  right: 2%;
 `;
 
 const User = styled.div`
@@ -35,6 +36,7 @@ const User = styled.div`
 const Name = styled.span`
   font-size: 16px;
   margin-left: 10px;
+  color: #fafded;
 `;
 
 const Image = styled.div<Props>`
@@ -57,7 +59,7 @@ type Props = {
 export const PageHeader: React.FC<Props> = (props) => {
   return (
     <Container>
-      <Logo src="/logo.png" alt="logo" />
+      <Logo src="/logo_light.png" alt="logo" />
       <RightContainer>
         <User onClick={props.editUserCallback}>
           <Image {...props}></Image>
