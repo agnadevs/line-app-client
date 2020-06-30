@@ -1,11 +1,31 @@
-export default async (url: string, data: any) => {
-  await fetch(url, {
-    method: "POST",
-    body: JSON.stringify(data),
+import { Room, User } from "./types";
+const path = "http://localhost:4000/api";
+
+export const fetchRooms = async (
+  userId: string,
+  setStateCallback: (rooms: Room[]) => void
+) => {
+  const response = await fetch(`${path}/rooms/user/${userId}`);
+  const { data, error } = await response.json();
+  if (error) {
+    console.log(error);
+    return;
+  }
+  setStateCallback(data);
+};
+
+export const updateRoomById = async (
+  roomId: number | null,
+  body: string,
+  onUpdateCallback: (room: Room, error: any) => void
+) => {
+  const response = await fetch(`${path}/rooms/${roomId}/update`, {
+    method: "PUT",
+    body: body,
     headers: {
       "Content-Type": "application/json",
     },
-  })
-    .then((res) => res.json())
-    .then((res) => console.log(res));
+  });
+  const { data, error } = await response.json();
+  onUpdateCallback(data, error);
 };

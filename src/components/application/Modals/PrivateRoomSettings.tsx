@@ -8,6 +8,8 @@ import { InfoBox } from "../InfoBox";
 import { RoomsContext } from "../../../state/roomsContext";
 import { UserContext } from "../../../state/userContext";
 import { LeaveRoom } from "../LeaveRoom";
+import { updateRoomById } from "../../../api";
+import { Room } from "../../../types";
 
 const Wrapper = styled.div`
   display: flex;
@@ -57,25 +59,24 @@ export const PrivateRoomSettings: React.FC<Props> = ({
     setRoomName(e.target.value);
   };
 
+  const onRoomUpdate = (room: Room, error: any) => {
+    if (error) {
+      setError(error);
+      return;
+    }
+    setSaved(true);
+    updateRoom(room);
+  };
+
   const saveRoomDetails = (e: React.FormEvent<HTMLFormElement>): void => {
     setDisabled(true);
     e.preventDefault();
 
-    fetch(`http://localhost:4000/api/rooms/${roomDetails.roomId}/update`, {
-      method: "PUT",
-      body: JSON.stringify({ roomName }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        updateRoom(res.data);
-        setSaved(true);
-      })
-      .catch((err) => {
-        setError(true);
-      });
+    updateRoomById(
+      roomDetails.roomId,
+      JSON.stringify({ roomName }),
+      onRoomUpdate
+    );
   };
 
   const isAdmin = currentRoom.adminId === parseInt(user.userId);

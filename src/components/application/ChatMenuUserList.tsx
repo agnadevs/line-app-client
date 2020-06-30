@@ -48,6 +48,7 @@ export const ChatMenuUserList: React.FC<Props> = ({
   const [usersWithAccess, setUsersWithAccess] = useState<User[]>([]);
   const [privateUsersList, setPrivateUsersList] = useState<MappedUser[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
+
   useEffect(() => {
     if (isPrivateRoom) {
       setIsFetching(true);
