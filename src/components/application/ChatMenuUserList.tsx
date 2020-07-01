@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { User } from "../../types";
+import { getUsersByRoomId } from "../../api";
 
 const UserList = styled.ul`
   position: absolute;
@@ -49,15 +50,18 @@ export const ChatMenuUserList: React.FC<Props> = ({
   const [privateUsersList, setPrivateUsersList] = useState<MappedUser[]>([]);
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
+  const onFetchComplete = (
+    usersWithoutAccess: User[],
+    usersWithAccess: User[]
+  ) => {
+    setUsersWithAccess(usersWithAccess);
+    setIsFetching(false);
+  };
+
   useEffect(() => {
     if (isPrivateRoom) {
       setIsFetching(true);
-      fetch(`http://localhost:4000/api/rooms/${roomId}/users`)
-        .then((res) => res.json())
-        .then((res) => {
-          setUsersWithAccess(res.data.usersWithAccess);
-          setIsFetching(false);
-        });
+      getUsersByRoomId(roomId, onFetchComplete);
     }
   }, [isPrivateRoom, roomId]);
 

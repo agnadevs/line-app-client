@@ -6,6 +6,8 @@ import { InfoBox } from "../InfoBox";
 import { Modal } from "./Modal";
 import { Button } from "../Button";
 import { Input } from "../Input";
+import { User } from "../../../types";
+import { updateUserById } from "../../../api";
 
 const Container = styled.div`
   display: flex;
@@ -48,35 +50,31 @@ export const EditUser: React.FC<Props> = ({ modal }) => {
   const [disabled, setDisabled] = useState(true);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const onUpdateComplete = (data: User, error: any) => {
+    if (error) {
+      setError(true);
+      return;
+    }
+    const updatedUser = {
+      userName: data.userName,
+      userId: user.userId,
+      profileImageURL: user.profileImageURL,
+      color: user.color,
+    };
+    addUser(updatedUser);
+    Cookies.set("user", updatedUser, { expires: 7 });
+    setSaved(true);
+  };
+
   const saveProfile = (e: React.FormEvent<HTMLFormElement>): void => {
     setDisabled(true);
     e.preventDefault();
-    const data = {
+
+    const body = JSON.stringify({
       userName: name,
       userId,
-    };
-    fetch("http://localhost:4000/api/users/update", {
-      method: "PUT",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        const updatedUser = {
-          userName: res.data.userName,
-          userId: user.userId,
-          profileImageURL: res.data.profileImageURL,
-          color: user.color,
-        };
-        addUser(updatedUser);
-        Cookies.set("user", updatedUser, { expires: 7 });
-        setSaved(true);
-      })
-      .catch((err) => {
-        setError(true);
-      });
+    });
+    updateUserById(body, onUpdateComplete);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {

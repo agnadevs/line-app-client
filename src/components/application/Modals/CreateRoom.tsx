@@ -6,6 +6,8 @@ import { Modal } from "./Modal";
 import { InfoBox } from "../InfoBox";
 import { Button } from "../Button";
 import { Input } from "../Input";
+import { Room } from "../../../types";
+import { postNewRoom } from "../../../api";
 
 const Form = styled.form`
   display: flex;
@@ -36,27 +38,23 @@ export const CreateRoom: React.FC<Props> = ({ modal }) => {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const onPostComplete = (data: Room, error: any) => {
+    if (error) {
+      setError(true);
+      return;
+    }
+    setSaved(true);
+    addNewRoom(data);
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setDisabled(true);
     e.preventDefault();
     if (roomName === "") {
       console.log("Please enter a room name");
     }
-    fetch("http://localhost:4000/api/rooms", {
-      method: "POST",
-      body: JSON.stringify({ userId: user.userId, roomName }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setSaved(true);
-        addNewRoom(res.data);
-      })
-      .catch((err) => {
-        setError(true);
-      });
+    const body = JSON.stringify({ userId: user.userId, roomName });
+    postNewRoom(body, onPostComplete);
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

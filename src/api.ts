@@ -1,4 +1,4 @@
-import { Room, User } from "./types";
+import { Room, User, ChatMessage } from "./types";
 const path = "http://localhost:4000/api";
 
 export const getRoomsByUserId = async (
@@ -91,3 +91,41 @@ export const postAccessToken = async (
   onTokenVerified(data, error);
 };
 
+export const postNewRoom = async (
+  body: string,
+  onPostedRoom: (data: Room, error: any) => void
+) => {
+  const response = await fetch(`${path}/rooms`, {
+    method: "POST",
+    body: body,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const { data, error } = await response.json();
+  onPostedRoom(data, error);
+};
+
+export const updateUserById = async (
+  body: string,
+  onUserUpdated: (updatedUser: User, error: any) => void
+) => {
+  const response = await fetch(`${path}/users/update`, {
+    method: "PUT",
+    body: body,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const { data, error } = await response.json();
+  onUserUpdated(data, error);
+};
+
+export const getMessagesByRoomId = async (
+  roomId: string,
+  onFetchedMessages: (messages: ChatMessage[], error: any) => void
+) => {
+  const response = await fetch(`${path}/rooms/${roomId}/messages`);
+  const { data, error } = await response.json();
+  onFetchedMessages(data, error);
+};

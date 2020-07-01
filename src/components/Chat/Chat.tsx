@@ -11,6 +11,7 @@ import { UserContext } from "../../state/userContext";
 import { RoomsContext } from "../../state/roomsContext";
 import { ChatMenu } from "../Application/ChatMenu";
 import { RoomsMenu } from "../Application/RoomsMenu";
+import { getMessagesByRoomId } from "../../api";
 
 interface MatchParams {
   name: string;
@@ -76,14 +77,19 @@ export const Chat: React.FC<Props> = (props) => {
     (room: Room) => room.roomId === parseInt(roomId)
   );
 
+  const onFetchedMessages = (data: ChatMessage[], error: any) => {
+    if (error) {
+      console.log(error);
+      return;
+    }
+    setMessages((messages) => [...messages, ...data]);
+  };
+
   useEffect(() => {
     const socket = io.connect("localhost:4000");
     setSocketState(socket);
 
-    fetch(`http://localhost:4000/api/chat/${roomId}`)
-      .then((res) => res.json())
-      .then((res) => setMessages((messages) => [...messages, ...res.data]))
-      .catch((err) => console.log(err));
+    getMessagesByRoomId(roomId, onFetchedMessages);
 
     checkAndSetUserContext(user, addUser);
     socket.emit("joinRoom", {
