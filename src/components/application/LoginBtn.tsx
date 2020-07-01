@@ -4,9 +4,10 @@ import Cookies from "js-cookie";
 import { useHistory } from "react-router";
 import { InfoBox } from "./InfoBox";
 import { AuthContext } from "../../state/authContext";
+import { User } from "../../types";
+import { postAccessToken } from "../../api";
 
-const CLIENT_ID =
-  "627288097347-5a68p3saa38s53fqmmllk8773odutoc2.apps.googleusercontent.com";
+const CLIENT_ID = process.env.CLIENT_ID!;
 
 type Info = {
   text: string;
@@ -19,26 +20,22 @@ const LoginBtn: React.FC = () => {
 
   const history = useHistory();
 
+  const onTokenVerified = (data: User, error: any) => {
+    if (error) {
+      setError({
+        isError: true,
+        text: "Something went wrong! Try again",
+      });
+    }
+    Cookies.set("user", data, { expires: 7 });
+    isUserLoggedIn(true);
+    history.push("/lounge");
+  };
+
   const login = async (response: any) => {
-    await fetch("http://localhost:4000/api/login", {
-      method: "POST",
-      body: JSON.stringify({ accessToken: response.tokenId }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.err) {
-          setError({
-            isError: true,
-            text: "Something went wrong! Try again",
-          });
-        }
-        Cookies.set("user", res.data, { expires: 7 });
-        isUserLoggedIn(true);
-        history.push("/lounge");
-      })
+    const body = JSON.stringify({ accessToken: response.tokenId });
+
+    await postAccessToken(body, onTokenVerified)
       .catch((err) =>
         setError({ isError: true, text: "Something went wrong! Try again" })
       );

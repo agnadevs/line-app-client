@@ -10,7 +10,7 @@ import { EditUser } from "../Application/Modals/EditUser";
 import { CreateRoom } from "../Application/Modals/CreateRoom";
 import { PrivateRoomSettings } from "../Application/Modals/PrivateRoomSettings";
 import { Button } from "../Application/Button";
-import { fetchRooms } from "../../api";
+import { getRoomsByUserId } from "../../api";
 
 const MenuWrapper = styled.div`
   display: flex;
@@ -91,7 +91,7 @@ export default () => {
   useEffect(() => {
     if (user.userId !== "") {
       if (rooms.length === 0) {
-        fetchRooms(user.userId, setInitialRooms);
+        getRoomsByUserId(user.userId, setInitialRooms);
       }
     }
   }, [setInitialRooms, rooms.length, user]);

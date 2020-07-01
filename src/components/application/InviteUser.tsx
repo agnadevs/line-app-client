@@ -2,6 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import { User } from "../../types";
 import { UserContext } from "../../state/userContext";
+import {
+  getUsersByRoomId,
+  postUserWithAccess,
+  deleteUserWithAccess,
+} from "../../api";
 
 const Ul = styled.ul`
   background-color: #caffb9;
@@ -60,45 +65,26 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/api/rooms/${roomId}/users`)
-      .then((res) => res.json())
-      .then((res) => {
-        setUsersWithoutAccess(res.data.usersWithoutAccess);
-        setUsersWithAccess(res.data.usersWithAccess);
-      });
+    getUsersByRoomId(roomId, onFetchComplete);
   }, [roomId]);
 
+  const onFetchComplete = (
+    usersWithoutAccess: User[],
+    usersWithAccess: User[]
+  ) => {
+    setUsersWithoutAccess(usersWithoutAccess);
+    setUsersWithAccess(usersWithAccess);
+  };
+
   const addToUsersWithAccess = async (userId: string) => {
-    fetch(`http://localhost:4000/api/rooms/${roomId}/users/${userId}`, {
-      method: "POST",
-      body: JSON.stringify({}),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setUsersWithoutAccess(res.data.usersWithoutAccess);
-        setUsersWithAccess(res.data.usersWithAccess);
-      });
+    postUserWithAccess(roomId, userId, onFetchComplete);
   };
 
   const removeFromUsersWithAccess = async (userId: string) => {
     if (userId === user.userId) {
       return;
     }
-    fetch(`http://localhost:4000/api/rooms/${roomId}/users/${userId}`, {
-      method: "DELETE",
-      body: JSON.stringify({}),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setUsersWithoutAccess(res.data.usersWithoutAccess);
-        setUsersWithAccess(res.data.usersWithAccess);
-      });
+    deleteUserWithAccess(roomId, userId, onFetchComplete);
   };
 
   return (

@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Button } from "./Button";
 import { RoomsContext } from "../../state/roomsContext";
 import { UserContext } from "../../state/userContext";
+import { deleteUserWithAccess, getRoomsByUserId } from "../../api";
+import { Room } from "../../types";
 
 const Wrapper = styled.div`
   display: flex;
@@ -31,24 +33,14 @@ export const LeaveRoom: React.FC<Props> = ({ roomId, closeModalCb }) => {
 
   if (!currentRoom) return null;
 
+  const onFetchComplete = (rooms: Room[]) => {
+    setInitialRooms(rooms);
+    closeModalCb();
+  };
+
   const leaveRoom = async (userId: string) => {
-    fetch(`http://localhost:4000/api/rooms/${roomId}/users/${userId}`, {
-      method: "DELETE",
-      body: JSON.stringify({}),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        fetch(`http://localhost:4000/api/rooms/user/${user.userId}`)
-          .then((res) => res.json())
-          .then((res) => {
-            console.log(res.data);
-            setInitialRooms(res.data);
-            closeModalCb();
-          });
-      });
+    await deleteUserWithAccess(roomId, userId);
+    getRoomsByUserId(userId, onFetchComplete);
   };
 
   return (
