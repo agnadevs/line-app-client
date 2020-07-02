@@ -9,9 +9,11 @@ import { RouteComponentProps } from "react-router";
 import { checkAndSetUserContext } from "../../user";
 import { UserContext } from "../../state/userContext";
 import { RoomsContext } from "../../state/roomsContext";
-import { ChatMenu } from "../Application/ChatMenu";
-import { RoomsMenu } from "../Application/RoomsMenu";
+import { UserMenu } from "../Application/Menu/UserMenu";
+import { RoomsMenu } from "../Application/Menu/RoomsMenu";
 import { getMessagesByRoomId } from "../../api";
+import { MobileMenu } from "../Application/Menu/MobileMenu";
+import { MenuSwitch } from "../Application/Menu/MenuSwitch";
 
 interface MatchParams {
   name: string;
@@ -26,6 +28,9 @@ const ChatContainer = styled.div`
   grid-template-rows: auto 60px;
   margin: 0 auto;
   padding: 5px;
+  @media only screen and (max-width: 450px) {
+    width: 90%;
+  }
 `;
 
 const DisplayMessagesContainer = styled.div`
@@ -137,8 +142,7 @@ export const Chat: React.FC<Props> = (props) => {
 
   return (
     <>
-      <ChatMenu currentRoom={currentRoom!} activeUsers={usersInRoom} />
-      <RoomsMenu />
+      <MenuSwitch currentRoom={currentRoom!} activeUsers={usersInRoom} />
       <ChatContainer>
         <DisplayMessagesContainer>
           <MessagesList userId={user.userId} messages={messages} />

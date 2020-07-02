@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { User } from "../../types";
-import { getUsersByRoomId } from "../../api";
+import { User } from "../../../types";
+import { getUsersByRoomId } from "../../../api";
 
-const UserList = styled.ul`
+const List = styled.ul`
   position: absolute;
   top: 10%;
   /* -webkit-transform: translateY(-50%);
@@ -41,7 +41,7 @@ type MappedUser = {
   isActive: boolean;
 };
 
-export const ChatMenuUserList: React.FC<Props> = ({
+export const UserList: React.FC<Props> = ({
   activeUsers,
   isPrivateRoom,
   roomId,
@@ -83,7 +83,7 @@ export const ChatMenuUserList: React.FC<Props> = ({
   if (isFetching) return null;
 
   return (
-    <UserList>
+    <List>
       {!isPrivateRoom
         ? activeUsers.map((user: User) => {
             return <PublicUser key={user.userId}>{user.userName}</PublicUser>;
@@ -95,6 +95,6 @@ export const ChatMenuUserList: React.FC<Props> = ({
               </PrivateUser>
             );
           })}
-    </UserList>
+    </List>
   );
 };

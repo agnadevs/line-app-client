@@ -7,8 +7,6 @@ import { AuthContext } from "../../state/authContext";
 import { User } from "../../types";
 import { postAccessToken } from "../../api";
 
-const CLIENT_ID = process.env.CLIENT_ID!;
-
 type Info = {
   text: string;
   isError: boolean;
@@ -19,6 +17,8 @@ const LoginBtn: React.FC = () => {
   const [error, setError] = useState<Info>({ isError: false, text: "" });
 
   const history = useHistory();
+  const CLIENT_ID =
+    "627288097347-5a68p3saa38s53fqmmllk8773odutoc2.apps.googleusercontent.com";
 
   const onTokenVerified = (data: User, error: any) => {
     if (error) {
@@ -35,10 +35,9 @@ const LoginBtn: React.FC = () => {
   const login = async (response: any) => {
     const body = JSON.stringify({ accessToken: response.tokenId });
 
-    await postAccessToken(body, onTokenVerified)
-      .catch((err) =>
-        setError({ isError: true, text: "Something went wrong! Try again" })
-      );
+    await postAccessToken(body, onTokenVerified).catch((err) =>
+      setError({ isError: true, text: "Something went wrong! Try again" })
+    );
   };
 
   const logout = () => {
