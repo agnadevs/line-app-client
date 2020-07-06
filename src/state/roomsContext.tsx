@@ -39,6 +39,9 @@ const RoomsProvider: React.FC = ({ children }) => {
   const getRoomById = (id: number) => {
     return rooms.find((room: Room) => room.roomId === id);
   };
+
+  
+
   return (
     <RoomsContext.Provider
       value={{ rooms, setInitialRooms, addNewRoom, updateRoom, getRoomById }}

@@ -14,6 +14,7 @@ import { RoomsMenu } from "../Application/Menu/RoomsMenu";
 import { getMessagesByRoomId } from "../../api";
 import { MobileMenu } from "../Application/Menu/MobileMenu";
 import { MenuSwitch } from "../Application/Menu/MenuSwitch";
+import { NilsMenuSwitch } from "../Application/Menu/NilsMenuSwitch";
 
 interface MatchParams {
   name: string;
@@ -103,7 +104,6 @@ export const Chat: React.FC<Props> = (props) => {
     });
 
     socket.on("activeUsersInRoom", (activeUsers: User[]) => {
-      console.log("socket active users", activeUsers);
       setUsersInRoom(activeUsers);
     });
 
@@ -142,7 +142,7 @@ export const Chat: React.FC<Props> = (props) => {
 
   return (
     <>
-      <MenuSwitch currentRoom={currentRoom!} activeUsers={usersInRoom} />
+      <NilsMenuSwitch currentRoom={currentRoom!} activeUsers={usersInRoom} />
       <ChatContainer>
         <DisplayMessagesContainer>
           <MessagesList userId={user.userId} messages={messages} />
