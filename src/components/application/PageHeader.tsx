@@ -7,21 +7,32 @@ const Container = styled.div`
   justify-content: center;
   position: relative;
   margin-bottom: 30px;
+  @media only screen and (max-width: 450px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const Logo = styled.img`
   width: 25%;
   margin-top: 20px;
+  @media only screen and (max-width: 450px) {
+    width: 50%;
+    margin-bottom: 20px;
+  }
 `;
 
 const RightContainer = styled.div`
   display: grid;
   grid-template-rows: 1fr auto;
   grid-row-gap: 15px;
-  justify-items: start;
-  position: absolute;
-  top: 15%;
-  left: 2%;
+  justify-items: center;
+  @media only screen and (min-width: 450px) {
+    position: absolute;
+    top: 15%;
+    left: 2%;
+    justify-items: start;
+  }
 `;
 
 const User = styled.div`

@@ -5,7 +5,6 @@ const MessageContainer = styled.div`
   margin: 15px auto;
   border: none;
   border-radius: 10px;
-  opacity: 0.5;
   background-color: #fafded;
   padding: 10px;
   margin-bottom: 2px;

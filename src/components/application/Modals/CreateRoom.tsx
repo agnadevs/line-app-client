@@ -12,6 +12,7 @@ import { postNewRoom } from "../../../api";
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 type Props = {
