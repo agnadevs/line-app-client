@@ -15,11 +15,14 @@ const Ul = styled.ul`
   padding: 5px;
   text-align: center;
   line-height: 40px;
-  li {
-    position: relative;
-    :hover {
-      cursor: pointer;
-    }
+  max-height: 300px;
+  overflow: scroll;
+`;
+
+const Li = styled.li<{ isAdmin: boolean }>`
+  position: relative;
+  :hover {
+    cursor: ${(props) => (props.isAdmin ? "not-allowed" : "pointer")};
   }
 `;
 
@@ -96,17 +99,20 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
         {!!usersWithAccess.length && (
           <Ul>
             {usersWithAccess.map((u: User) => {
-              const name =
-                user.userId === u.userId
-                  ? `${u.userName} ( admin ) `
-                  : u.userName;
+              const adminColor = user.userId === u.userId ? "0.4" : "1";
               return (
-                <li
-                  key={u.userId}
-                  onClick={() => removeFromUsersWithAccess(u.userId)}
-                >
-                  {name} <Icon className="fas fa-minus fa-sm"></Icon>
-                </li>
+                <>
+                  <Li
+                    key={u.userId}
+                    onClick={() => removeFromUsersWithAccess(u.userId)}
+                    style={{
+                      opacity: adminColor,
+                    }}
+                    isAdmin={user.userId === u.userId}
+                  >
+                    {u.userName}
+                  </Li>
+                </>
               );
             })}
           </Ul>
@@ -121,7 +127,6 @@ export const InviteUser: React.FC<Props> = ({ roomId }) => {
                   key={user.userId}
                 >
                   {user.userName}
-                  <Icon className="fas fa-plus fa-sm"></Icon>
                 </li>
               );
             })}

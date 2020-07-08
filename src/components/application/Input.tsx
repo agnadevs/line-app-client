@@ -7,6 +7,10 @@ const StyledInput = styled.input`
   padding: 10px;
   margin: 10px auto;
   text-align: center;
+  @media only screen and (max-width: 450px) {
+    width: 250px;
+    height: 20px;
+  }
 `;
 
 type Ref = HTMLInputElement;

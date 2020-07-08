@@ -9,10 +9,7 @@ import { RouteComponentProps } from "react-router";
 import { checkAndSetUserContext } from "../../user";
 import { UserContext } from "../../state/userContext";
 import { RoomsContext } from "../../state/roomsContext";
-import { UserMenu } from "../Application/Menu/UserMenu";
-import { RoomsMenu } from "../Application/Menu/RoomsMenu";
 import { getMessagesByRoomId } from "../../api";
-import { MobileMenu } from "../Application/Menu/MobileMenu";
 import { MenuSwitch } from "../Application/Menu/MenuSwitch";
 
 interface MatchParams {
@@ -103,7 +100,6 @@ export const Chat: React.FC<Props> = (props) => {
     });
 
     socket.on("activeUsersInRoom", (activeUsers: User[]) => {
-      console.log("socket active users", activeUsers);
       setUsersInRoom(activeUsers);
     });
 

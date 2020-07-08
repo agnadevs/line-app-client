@@ -6,7 +6,7 @@ const StyledModal = styled.div<Props>`
   display: ${(props) => (props.open ? "block" : "none")};
   position: fixed;
   z-index: 1;
-  padding-top: 100px;
+  padding-top: 40px;
   left: 0;
   top: 0;
   width: 100%;
@@ -19,11 +19,14 @@ const StyledModal = styled.div<Props>`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
   border-radius: 7px;
   width: 80%;
+  max-height: 80%;
+  overflow: scroll;
 `;
 
 const Title = styled.div`
@@ -36,25 +39,6 @@ const Title = styled.div`
     margin-top: 20px;
   }
 `;
-
-// const Button = styled.button`
-//   width: 300px;
-//   height: 40px;
-//   padding: 10px;
-//   margin: 10px auto;
-//   background-color: #a8ccc9;
-//   border: none;
-//   border-radius: 3px;
-//   font-size: 14px;
-//   text-transform: uppercase;
-//   letter-spacing: 3px;
-//   color: #3c6763;
-//   :hover {
-//     cursor: pointer;
-//     color: #a8ccc9;
-//     background-color: #3c6763;
-//   }
-// `;
 
 type Props = {
   open: boolean;

@@ -5,7 +5,7 @@ const StyledButton = styled.button<Props>`
   width: 300px;
   height: 40px;
   padding: 10px;
-  margin: 10px auto;
+  margin: 10px;
   color: ${(props) =>
     props.disabled ? "#F5F5F4" : props.standardBtn ? "#3c6763" : "#33cc00"};
   background-color: ${(props) =>
@@ -22,6 +22,9 @@ const StyledButton = styled.button<Props>`
       props.disabled ? "#F5F5F4" : props.standardBtn ? "#a8ccc9" : "#caffb9"};
     background-color: ${(props) =>
       props.disabled ? "#CFCCC9" : props.standardBtn ? "#3c6763" : "#33cc00"};
+  }
+  @media only screen and (max-width: 450px) {
+    width: 275px;
   }
 `;
 

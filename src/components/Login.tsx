@@ -6,13 +6,15 @@ const WelcomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto;
-  padding: 70px;
+  margin: 100px auto;
 `;
 
 const Logo = styled.img`
   width: 50%;
-  margin: 10px 20px;
+  margin: 50px auto;
+  @media only screen and (max-width: 450px) {
+    width: 75%;
+  }
 `;
 
 export const Login: React.FC = () => {
