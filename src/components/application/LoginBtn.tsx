@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { useHistory } from "react-router";
 import { InfoBox } from "./InfoBox";
 import { AuthContext } from "../../state/authContext";
+import { UserContext } from "../../state/userContext";
 import { User } from "../../types";
 import { postAccessToken } from "../../api";
 
@@ -14,6 +15,8 @@ type Info = {
 
 const LoginBtn: React.FC = () => {
   const { isLoggedIn, isUserLoggedIn } = useContext(AuthContext);
+  const { removeUser } = useContext(UserContext);
+
   const [error, setError] = useState<Info>({ isError: false, text: "" });
 
   const history = useHistory();
@@ -42,6 +45,7 @@ const LoginBtn: React.FC = () => {
 
   const logout = () => {
     Cookies.remove("user");
+    removeUser();
     isUserLoggedIn(false);
     history.push("/");
   };

@@ -76,6 +76,21 @@ export const deleteUserWithAccess = async (
   }
 };
 
+export const deleteUserAccount = async (
+  userId: string,
+  onDeletedAccount: (data: string, error: any) => void
+) => {
+  const response = await fetch(`${path}/users/${userId}`, {
+    method: "DELETE",
+    body: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const { data, error } = await response.json();
+  onDeletedAccount(data, error);
+};
+
 export const postAccessToken = async (
   body: string,
   onTokenVerified: (data: User, error: any) => void

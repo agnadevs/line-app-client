@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import styled from "styled-components";
 import Cookies from "js-cookie";
+import { useHistory } from "react-router";
 import { UserContext } from "../../../state/userContext";
+import { AuthContext } from "../../../state/authContext";
 import { InfoBox } from "../InfoBox";
 import { Modal } from "./Modal";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import { User } from "../../../types";
-import { updateUserById } from "../../../api";
+import { updateUserById, deleteUserAccount } from "../../../api";
 
 const Container = styled.div`
   display: flex;
@@ -22,7 +24,9 @@ const Image = styled.img`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
+
 const Label = styled.span`
   font-size: 16px;
   font-family: "IBM Plex Mono", monospace;
@@ -30,6 +34,30 @@ const Label = styled.span`
   letter-spacing: 2px;
   margin: 5px auto;
 `;
+
+const DeleteContainer = styled.div<StyleProps>`
+  display: ${(props) => (props.hide === true ? "none" : "flex")};
+  flex-direction: column;
+`;
+
+const ConfirmContainer = styled.div`
+  flex-direction: row;
+`;
+
+const Disclaimer = styled.p`
+  width: 580px;
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 1rem;
+  padding: 25px;
+  background-color: #ee4f2f;
+  color: white;
+  border-radius: 3px;
+`;
+
+type StyleProps = {
+  hide: boolean;
+};
 
 type Props = {
   modal: {
@@ -40,15 +68,21 @@ type Props = {
 };
 
 export const EditUser: React.FC<Props> = ({ modal }) => {
-  const { user, addUser } = useContext(UserContext);
+  const { user, addUser, removeUser } = useContext(UserContext);
+  const { isUserLoggedIn } = useContext(AuthContext);
   const { userName, userId, profileImageURL } = user;
   const { open, modalName, closeModalCallback } = modal;
 
   const [name, setName] = useState<string>(userName);
   const [saved, setSaved] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [disabled, setDisabled] = useState(true);
+  const [deleteDone, setDeleteDone] = useState({ done: false, message: "" });
+  const [deleteConfirmed, setDeleteConfirmed] = useState(false);
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const [showDeletePrompt, setShowDeletePrompt] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const history = useHistory();
 
   const onUpdateComplete = (data: User, error: any) => {
     if (error) {
@@ -91,6 +125,32 @@ export const EditUser: React.FC<Props> = ({ modal }) => {
     }
   }, []);
 
+  const logout = () => {
+    Cookies.remove("user");
+    removeUser();
+    isUserLoggedIn(false);
+    history.push("/");
+  };
+
+  const onDeleteComplete = (data: string, error: any) => {
+    if (error) {
+      setError(true);
+      return;
+    }
+    setDeleteDone({
+      done: true,
+      message: `${data} You will be logged out in 5 seconds.`,
+    });
+    setTimeout(() => {
+      logout();
+    }, 5000);
+  };
+
+  const deleteAccount = () => {
+    setDeleteConfirmed(true);
+    deleteUserAccount(user.userId, onDeleteComplete);
+  };
+
   return (
     <Modal
       open={open}
@@ -114,6 +174,53 @@ export const EditUser: React.FC<Props> = ({ modal }) => {
             />
           ) : null}
         </Form>
+        <DeleteContainer hide={showDeletePrompt}>
+          <Button
+            title="Delete my account"
+            onClick={() => setShowDeletePrompt(true)}
+            delete={true}
+          />
+        </DeleteContainer>
+
+        {showDeletePrompt && (
+          <ConfirmContainer>
+            <Disclaimer>
+              If you choose to delete your account, we will remove all data
+              connected to your account.
+              <br />
+              <br />
+              This includes all your historic messages in all chat rooms, your
+              access to the private chat rooms you have been invited to, as well
+              as the removal of chat rooms for which you are admin.
+              <br />
+              <br />
+              There's no turning back - logging in with the same Google account
+              in the future will not restore this data, so make sure you're 100%
+              certain you want to delete your account!
+            </Disclaimer>
+            <Button
+              title="Yes, I'm sure."
+              onClick={deleteAccount}
+              disabled={deleteConfirmed}
+            />
+            <Button
+              title="No, I changed my mind!"
+              onClick={() => setShowDeletePrompt(false)}
+              disabled={deleteConfirmed}
+              standardBtn
+            />
+          </ConfirmContainer>
+        )}
+        {deleteDone.done || error ? (
+          <InfoBox
+            text={
+              deleteDone.done
+                ? deleteDone.message
+                : "Unable to delete account, please try again."
+            }
+            isError={deleteDone.done ? false : true}
+          />
+        ) : null}
       </Container>
     </Modal>
   );

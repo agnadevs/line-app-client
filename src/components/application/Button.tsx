@@ -7,9 +7,21 @@ const StyledButton = styled.button<Props>`
   padding: 10px;
   margin: 10px;
   color: ${(props) =>
-    props.disabled ? "#F5F5F4" : props.standardBtn ? "#3c6763" : "#33cc00"};
+    props.disabled
+      ? "#F5F5F4"
+      : props.delete
+      ? "#EE4F2F"
+      : props.standardBtn
+      ? "#3c6763"
+      : "#33cc00"};
   background-color: ${(props) =>
-    props.disabled ? "#CFCCC9" : props.standardBtn ? "#a8ccc9" : "#caffb9"};
+    props.disabled
+      ? "#CFCCC9"
+      : props.delete
+      ? "#F69F8E"
+      : props.standardBtn
+      ? "#a8ccc9"
+      : "#caffb9"};
   border: none;
   border-radius: 3px;
   font-size: 14px;
@@ -19,9 +31,21 @@ const StyledButton = styled.button<Props>`
   :hover {
     cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
     color: ${(props) =>
-      props.disabled ? "#F5F5F4" : props.standardBtn ? "#a8ccc9" : "#caffb9"};
+      props.disabled
+        ? "#F5F5F4"
+        : props.delete
+        ? "#F69F8E"
+        : props.standardBtn
+        ? "#a8ccc9"
+        : "#caffb9"};
     background-color: ${(props) =>
-      props.disabled ? "#CFCCC9" : props.standardBtn ? "#3c6763" : "#33cc00"};
+      props.disabled
+        ? "#CFCCC9"
+        : props.delete
+        ? "#EE4F2F"
+        : props.standardBtn
+        ? "#3c6763"
+        : "#33cc00"};
   }
   @media only screen and (max-width: 450px) {
     width: 275px;
@@ -33,6 +57,7 @@ type Props = {
   disabled?: boolean;
   onClick?: () => void;
   standardBtn?: boolean;
+  delete?: boolean;
 };
 
 export const Button: React.FC<Props> = (props) => {

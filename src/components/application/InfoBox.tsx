@@ -35,7 +35,7 @@ const Container = styled.div<Props>`
   align-self: center;
   background-color: ${(props) => (props.isError ? "#FD9187" : "#caffb9")};
   color: ${(props) => (props.isError ? "#FC594A" : "#33cc00")};
-  width: 300px;
+  min-width: 300px;
   height: 40px;
   border-radius: 4px;
 `;
